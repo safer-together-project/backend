@@ -1,0 +1,15 @@
+#  CI/CD Implementation
+
+image: python:3.8
+
+pipelines:
+  branches:
+    main:
+        - step:
+            name: Copy to Server and Run
+            deployment: production
+            clone:
+              enabled: false
+            script:
+                - rsync -avz --exclude='.env' --delete -P -e "ssh -i /opt/atlassian/pipelines/agent/ssh/id_rsa -o StrictHostKeyChecking=no" ./ $USER@$HOST:$PROJECT_PATH
+                - ssh -A -tt -i /opt/atlassian/pipelines/agent/ssh/id_rsa -o 'StrictHostKeyChecking=no' -p ${PORT:-22} $USER@$HOST "bash -c '${PROJECT_PATH}/deploy.sh ${BITBUCKET_COMMIT}'"
