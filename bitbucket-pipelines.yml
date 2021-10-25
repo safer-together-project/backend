@@ -15,7 +15,7 @@ pipelines:
         caches:
             - rsync
         script:
-          - if ! which rsync >/dev/null; then wget http://ftp.us.debian.org/debian/pool/main/r/rsync/rsync_3.2.3-8_arm64.deb; apt install ./rsync_3.2.3-8_arm64.deb; fi
+          - if ! which rsync >/dev/null; then wget http://ftp.us.debian.org/debian/pool/main/r/rsync/rsync_3.2.3-8_amd64.deb; apt install ./rsync_3.2.3-8_amd64.deb; fi
 
     - step:
         name: Copy to Server and Run
