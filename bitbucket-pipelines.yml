@@ -4,7 +4,7 @@ image: python:3.8
 
 pipelines:
   branches:
-    main:
+    master:
         - step:
             name: Copy to Server and Run
             deployment: production
