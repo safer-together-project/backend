@@ -2,11 +2,18 @@
 
 image: python:3.8
 
+definitions:
+  caches:
+    rsync: /usr/bin/
+
+
 pipelines:
   branches:
     master:
     - step:
         name: Install RSync
+        caches:
+            - rsync
         script:
           - if ! which rsync >/dev/null; then wget http://ftp.us.debian.org/debian/pool/main/r/rsync/rsync_3.2.3-8_arm64.deb; apt install ./rsync_3.2.3-8_arm64.deb; fi
 
