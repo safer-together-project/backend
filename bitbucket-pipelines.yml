@@ -24,4 +24,4 @@ pipelines:
                 SSH_KEY: $SSH_KEY
                 LOCAL_PATH: 'build'
                 DEBUG: 'true'
-                SSH_ARGS: '-o StrictHostKeyChecking=no
+                SSH_ARGS: '-o StrictHostKeyChecking=no'
