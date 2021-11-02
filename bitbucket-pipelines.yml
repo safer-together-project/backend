@@ -16,11 +16,11 @@ pipelines:
         clone:
             enabled: true
         script:
+            - ls
             - pipe: atlassian/rsync-deploy:0.6.0
               variables:
                 USER: $USER
                 SERVER: $HOST
                 REMOTE_PATH: $PROJECT_PATH
-                LOCAL_PATH: 'build'
+                LOCAL_PATH: './'
                 DEBUG: 'true'
-                SSH_ARGS: '-o StrictHostKeyChecking=no'
