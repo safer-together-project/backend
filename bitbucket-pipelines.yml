@@ -16,7 +16,6 @@ pipelines:
         clone:
             enabled: true
         script:
-            - ls
             - pipe: atlassian/rsync-deploy:0.6.0
               variables:
                 USER: $USER

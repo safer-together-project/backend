@@ -48,3 +48,8 @@ Thumbs.db
 *.mov
 *.wmv
 
+
+
+## Python ignore
+__pycache__/
+python-env/
