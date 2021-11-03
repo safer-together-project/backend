@@ -23,3 +23,4 @@ pipelines:
                 REMOTE_PATH: $PROJECT_PATH
                 LOCAL_PATH: './'
                 DEBUG: 'true'
+            - ssh $USER@$HOST "sh bitbucket-deploy.sh && exit"
