@@ -6,7 +6,6 @@ definitions:
   caches:
     rsync: /usr/bin/
 
-
 pipelines:
   branches:
     master:
