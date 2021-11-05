@@ -13,15 +13,15 @@ async def organization_login():
 
 
 
-# NGINX Unit Application
-async def application(scope, receive, send):
+# # NGINX Unit Application
+# async def application(scope, receive, send):
 
-    await send({
-        'type': 'http.response.start',
-        'status': 200
-    })
+#     await send({
+#         'type': 'http.response.start',
+#         'status': 200
+#     })
 
-    await send({
-        'type': 'http.response.body',
-        'body': b'Hello, ASGI\n'
-    })
+#     await send({
+#         'type': 'http.response.body',
+#         'body': b'Hello, ASGI\n'
+#     })
