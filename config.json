@@ -1,7 +1,7 @@
 {
     "listeners": {
         "*:8080": {
-            "pass": "applications/python"
+            "pass": "applications/stedcare-api"
         }
     },
     "applications": {
