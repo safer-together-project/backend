@@ -9,4 +9,7 @@ python3 -m venv python-env
 python-env/bin/pip install -r requirements.txt
 
 
+echo "Reload nginx Unit."
+sudo curl -X GET --unix-socket /var/run/control.unit.sock http://localhost/control/applications/stedscare-api/restart
+
 echo "\nDeploy script finish (deploy.sh)"

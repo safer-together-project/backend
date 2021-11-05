@@ -1,11 +1,11 @@
 {
     "listeners": {
         "*:80": {
-            "pass": "applications/stedcare-api"
+            "pass": "applications/stedscare-api"
         }
     },
     "applications": {
-        "stedcare-api": {
+        "stedscare-api": {
             "type": "python 3.8",
             "path": "/home/deploy/steds-care-backend/",
             "home": "/home/deploy/steds-care-backend/python-env/",
