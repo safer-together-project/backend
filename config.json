@@ -9,8 +9,8 @@
             "type": "python 3.9",
             "path": "/home/deploy/steds-care-backend/",
             "home": "/home/deploy/steds-care-backend/python-env/",
-            "module": "asgi",
-            "callable": "app"
+            "module": "main",
+            "callable": "api"
         }
     }
 }
