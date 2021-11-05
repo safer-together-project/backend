@@ -5,7 +5,7 @@
 ### Setting Up Environment
 After doing so, go to the `steds-care-backend` directory using command line or PyCharm Terminal and we will install the `env` environment for your setup by running:  
 `python3 -m venv python-env`  
-  
+
 ### Activating Environment
 Now that you have the environment, in order to be in the environment you type:  
 `source python-env/bin/activate`  
