@@ -14,9 +14,9 @@ tags_metadata = [
 api = FastAPI(
     title="StedsCareApi",
     description=description,
-    version="0.0.1"
+    version="0.0.1",
+    openapi_tags=tags_metadata
 )
-
 
 @api.get("/")
 async def root():
@@ -25,7 +25,7 @@ async def root():
 
 # Beacons
 
-@api.get("/api/v1/beacons/", tags=tags_metadata["beacons"])
+@api.get("/api/v1/beacons/", tags=["beacons"])
 async def get_beacons():
     return { "hahah" : "no" }
 
