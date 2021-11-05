@@ -6,7 +6,7 @@
     },
     "applications": {
         "stedcare-api": {
-            "type": "python 3.9",
+            "type": "python 3.8",
             "path": "/home/deploy/steds-care-backend/",
             "home": "/home/deploy/steds-care-backend/python-env/",
             "module": "main",

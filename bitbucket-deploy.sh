@@ -2,12 +2,11 @@
 
 echo "Deploy script start (deploy.sh)"
 
-echo ""
-# sudo /bin/systemctl restart steds-care.service 
-# sudo /bin/systemctl status steds-care.service
+echo "\n\nUpdate Python Dependencies"
+cd /home/deploy/steds-care-backend/
+python3 -m venv python-env
+source python-env/bin/activate
+pip install -r requirements.txt
+deactivate
 
-echo ""
-# sudo /bin/systemctl restart nginx
-# sudo /bin/systemctl status nginx
-
-echo "Deploy script finish (deploy.sh)"
+echo "\nDeploy script finish (deploy.sh)"
