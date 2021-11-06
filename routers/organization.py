@@ -17,7 +17,7 @@ router = APIRouter(
 async def read_organization(access_code: str, db: Session = Depends(get_db)):
     organization = db.query(Organization).filter(Organization.access_code == access_code).first()
     if organization is None:
-        raise HTTPException(status_code=404, detail="Beacon not found")
+        raise HTTPException(status_code=404, detail="Organization not found")
 
     return OrganizationBase(
                 id=organization.id, 
