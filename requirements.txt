@@ -22,3 +22,4 @@ typing-extensions==3.10.0.2
 uvicorn==0.15.0
 wrapt==1.13.3
 mariadb==1.0.1
+wheel==0.37.0
