@@ -1,5 +1,7 @@
 from fastapi import FastAPI
 
+from routers.beacon import router as BeaconRouter
+
 description = """
 Steds Care App Api for our research project
 """
@@ -18,18 +20,15 @@ api = FastAPI(
     openapi_tags=tags_metadata
 )
 
+# Add routers here
+api.include_router(BeaconRouter)
+
+@api.on_event("startup")
+async def on_startup():
+    pass
+
+
 @api.get("/")
 async def root():
     return {"message": "Welcome to Steds Care Api. This is just to test if our api works."}
 
-
-# Beacons
-
-@api.get("/api/v1/beacons/", tags=["beacons"])
-async def get_beacons():
-    return { "hahah" : "no" }
-
-
-@api.get("/api/v1/organization/login")
-async def organization_login():
-    return { "hahah" : "no" }
