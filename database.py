@@ -10,6 +10,7 @@ connection = database.connect(
     user=username,
     password=password,
     host=localhost,
-    database="workplace")
+    database=database)
 
+cursor = connection.cursor()
 
