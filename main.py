@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from routers.beacon import router as BeaconRouter
+from routers.organization import router as OrganizationRouter
 
 description = """
 Steds Care App Api for our research project
@@ -10,6 +11,10 @@ tags_metadata = [
     {
         "name": "beacons",
         "description": "Manages beacons from a given organization."
+    },
+    {
+        "name": "beacon",
+        "description": "A single beacon that reports status and location."
     }
 ]
 
@@ -22,11 +27,7 @@ api = FastAPI(
 
 # Add routers here
 api.include_router(BeaconRouter)
-
-@api.on_event("startup")
-async def on_startup():
-    pass
-
+api.include_router(OrganizationRouter)
 
 @api.get("/")
 async def root():

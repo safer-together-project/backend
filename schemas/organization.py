@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 
 
-class OrganizationSchema(BaseModel):
+class OrganizationBase(BaseModel):
     id: str
     name: str
     access_code: str

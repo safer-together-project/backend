@@ -2,7 +2,7 @@ from typing import List
 from pydantic import BaseModel
 
 
-class BeaconSchema(BaseModel):
+class BeaconBase(BaseModel):
     id: str
     organization_id: str
     major: int
