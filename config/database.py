@@ -18,39 +18,15 @@ Base = declarative_base()
 
 DATABASE_URL = f'mariadb+mariadbconnector://{username}:{password}@{host}:3306/{database_name}'
 
-engine = create_engine(  # 2
+engine = create_engine(
     DATABASE_URL
 )
 
-SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)  # 4
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def get_db() -> Generator:
-    db = SessionLocal()  # 2
+    db = SessionLocal() 
     try:
-        yield db  # 3
+        yield db
     finally:
-        db.close()  # 4
-
-# engine = create_async_engine(DATABASE_URL)
-
-# SessionLocal = scoped_session(
-#     sessionmaker(
-#         autocommit=False,
-#         autoflush=False,
-#         bind=engine
-#     )
-# )
-
-
-# async def get_session() -> AsyncSession:
-#     async_session = sessionmaker(
-#         engine,
-#         class_=AsyncSession,
-#         expire_on_commit=False,
-#         autocommit=False,
-#         autoflush=False
-#     )
-
-#     async with async_session() as session:
-#         yield session
-
+        db.close()

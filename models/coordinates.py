@@ -9,6 +9,6 @@ from sqlalchemy import Column, String
 class Coordinates(Base):
     __tablename__ = 'Coordinates'
 
-    id = Column(String, primary_key=true, index=true)
+    id = Column(String, primary_key=true)
     longitude = Column(Float)
     latitude = Column(Float)
