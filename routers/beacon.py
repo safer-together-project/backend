@@ -19,10 +19,10 @@ async def read_beacons(organization_id: str, db: Session = Depends(get_db)):
     beacons = db.query(Beacon).filter(Beacon.organization_id == organization_id)
     return [BeaconBase(
                 id=beacon.id, 
-                organization_id=beacon.organization_id, 
+                organization_id=beacon.organization_id,
+                location_id=beacon.location_id,
                 major=beacon.major,
                 minor=beacon.minor,
-                location=beacon.location,
                 status=beacon.status) for beacon in beacons]
 
 @router.get('/beacon/{beacon_id}', response_model=BeaconBase, tags=["beacon"])
@@ -34,7 +34,7 @@ async def read_beacon(beacon_id: str, db: Session = Depends(get_db)):
     return BeaconBase(
                 id=beacon.id, 
                 organization_id=beacon.organization_id, 
+                location_id=beacon.location.id,
                 major=beacon.major,
                 minor=beacon.minor,
-                location=beacon.location,
                 status=beacon.status)
