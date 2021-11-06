@@ -10,7 +10,13 @@
             "path": "/home/deploy/steds-care-backend/",
             "home": "/home/deploy/steds-care-backend/python-env/",
             "module": "main",
-            "callable": "api"
+            "callable": "api",
+            "environment": {
+                "DB_USER": "admin",
+                "DB_HOST": "localhost",
+                "DB_SECRET": "steds_care_db",
+                "DB_NAME": "stedscare"
+            }
         }
     }
 }

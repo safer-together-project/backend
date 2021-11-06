@@ -21,7 +21,7 @@ api = FastAPI(
 @api.get("/")
 async def root():
     return {"message": "Welcome to Steds Care Api. This is just to test if our api works."}
- 
+
 
 # Beacons
 
