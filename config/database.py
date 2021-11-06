@@ -5,9 +5,8 @@ from typing import Generator
 
 from sqlalchemy.ext.asyncio.engine import create_async_engine
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker, scoped_session
+from sqlalchemy.orm import sessionmaker
 
-from sqlalchemy.ext.asyncio import AsyncSession
 
 username = os.environ.get("DB_USER")
 password = os.environ.get("DB_SECRET")
