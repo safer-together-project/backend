@@ -20,7 +20,6 @@ async def read_beacons(organization_id: str, db: Session = Depends(get_db)):
     return [BeaconBase(
                 id=beacon.id, 
                 organization_id=beacon.organization_id,
-                location_id=beacon.location_id,
                 major=beacon.major,
                 minor=beacon.minor,
                 status=beacon.status) for beacon in beacons]
@@ -34,7 +33,6 @@ async def read_beacon(beacon_id: str, db: Session = Depends(get_db)):
     return BeaconBase(
                 id=beacon.id, 
                 organization_id=beacon.organization_id, 
-                location_id=beacon.location.id,
                 major=beacon.major,
                 minor=beacon.minor,
                 status=beacon.status)
