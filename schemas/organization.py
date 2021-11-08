@@ -2,7 +2,7 @@ from pydantic import BaseModel
 
 
 class OrganizationBase(BaseModel):
-    id: str
+    id: int
     name: str
     access_code: str
 
