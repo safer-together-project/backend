@@ -12,7 +12,6 @@ class Beacon(Base):
 
     id = Column(String, primary_key=true)
     organization_id = Column(Integer, ForeignKey('Organization.id'))
-    coordinates_id = Column(Integer, ForeignKey('Coordinates.id'))
     major = Column(Integer)
     minor = Column(Integer)
     status = Column(Integer)

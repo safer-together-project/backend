@@ -11,7 +11,6 @@ class Point(Base):
 
     id = Column(Integer, primary_key=true, autoincrement=true)
     beacon_id = Column(Integer, ForeignKey("Beacon.id"))
-    coordinates_id = Column(Integer, ForeignKey("Coordinates.id"))
     path_id = Column(Integer, ForeignKey("Path.id"))
     initial_timestamp = Column(DateTime)
     final_timestamp = Column(DateTime)

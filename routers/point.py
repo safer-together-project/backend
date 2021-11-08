@@ -21,7 +21,6 @@ async def read_points(path_id: str, db: Session = Depends(get_db)):
     return [PathBase(
                 id=point.id, 
                 beacon_id=point.beacon_id,
-                coordinates_id=point.coordinates_id,
                 path_id=point.path_id,
                 initial_timestamp=point.initial_timestamp,
                 final_timestamp=point.final_timestamp,
@@ -37,7 +36,6 @@ async def read_beacon(point_id: str, db: Session = Depends(get_db)):
     return PathBase(
                 id=point.id, 
                 beacon_id=point.beacon_id,
-                coordinates_id=point.coordinates_id,
                 path_id=point.path_id,
                 initial_timestamp=point.initial_timestamp,
                 final_timestamp=point.final_timestamp,
