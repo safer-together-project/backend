@@ -13,6 +13,5 @@ class Report(Base):
     organization_id = Column(Integer, ForeignKey("Organization.id"))
     infection_type = Column(Integer)
 
-    organization = relationship("Organization", back_populates="report")
-
+    organization = relationship("Organization", back_populates="reports")
     path = relationship("Path", back_populates="report")

@@ -7,6 +7,8 @@ class BeaconBase(BaseModel):
     major: int
     minor: int
     status: int
+    longitude: float
+    latitude: float
 
     # Automatically translates from dict to object
     class Config:

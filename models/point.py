@@ -15,8 +15,9 @@ class Point(Base):
     path_id = Column(Integer, ForeignKey("Path.id"))
     initial_timestamp = Column(DateTime)
     final_timestamp = Column(DateTime)
+    longitude = Column(Float)
+    latitude = Column(Float)
 
     # ORM Models
     beacon = relationship("Beacon")
-    coordinates = relationship("Coordinates")
-    path = relationship("Path", back_populates="point")
+    path = relationship("Path", back_populates="points")

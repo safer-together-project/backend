@@ -11,10 +11,15 @@ class Organization(Base):
     id = Column(Integer, primary_key=true, autoincrement=true)
     name = Column(String)
     access_code = Column(String)
+
+
+    reports = relationship("Report", 
+                back_populates="organization", 
+                uselist=True
+    )
+
     beacons = relationship(
         "Beacon",
         back_populates="organization",
         uselist=True
     )
-
-    report = relationship("Report", back_populates="organization")

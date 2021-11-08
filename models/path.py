@@ -13,4 +13,4 @@ class Path(Base):
     report_id = Column(Integer, ForeignKey("Report.id"))
 
     report = relationship("Report", back_populates="path")
-    path = relationship("Point", back_populates="path")
+    points = relationship("Point", back_populates="path", uselist=True)
