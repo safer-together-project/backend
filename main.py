@@ -11,27 +11,16 @@ description = """
 Steds Care App Api for our research project
 """
 
-tags_metadata = [
-    {
-        "name": "beacons",
-        "description": "Manages beacons from a given organization."
-    },
-    {
-        "name": "beacon",
-        "description": "A single beacon that reports status and location."
-    }
-]
 
 api = FastAPI(
     title="StedsCareApi",
     description=description,
-    version="0.0.1",
-    openapi_tags=tags_metadata
+    version="0.0.1"
 )
 
 # Add routers here
-api.include_router(BeaconRouter)
 api.include_router(OrganizationRouter)
+api.include_router(BeaconRouter)
 api.include_router(ReportRouter)
 api.include_router(PathRouter)
 api.include_router(PointRouter)

@@ -12,7 +12,6 @@ class Organization(Base):
     name = Column(String)
     access_code = Column(String)
 
-
     reports = relationship("Report", 
                 back_populates="organization", 
                 uselist=True

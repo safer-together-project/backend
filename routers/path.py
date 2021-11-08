@@ -10,9 +10,10 @@ from schemas.path import PathBase
 router = APIRouter(
     prefix="/path",
     responses={404: {"description": "Not found"}},
+    tags=["path"]
 )
 
-@router.get('/{report_id}', response_model=PathBase, tags=["path"])
+@router.get('/{report_id}', response_model=PathBase)
 async def read_path(report_id: str, db: Session = Depends(get_db)):
     path = db.query(Path).filter(Path.report_id == report_id).first()
 

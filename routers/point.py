@@ -13,9 +13,10 @@ from schemas.point import PointBase
 router = APIRouter(
     prefix="/points",
     responses={404: {"description": "Not found"}},
+    tags=["points"]
 )
 
-@router.get('/{path_id}', response_model=List[PointBase], tags=["points"])
+@router.get('/{path_id}', response_model=List[PointBase])
 async def read_points(path_id: str, db: Session = Depends(get_db)):
     points = db.query(Point).filter(Point.path_id == path_id)
     return [PathBase(
@@ -27,7 +28,7 @@ async def read_points(path_id: str, db: Session = Depends(get_db)):
                 longitude=point.longitude,
                 latitude=point.latitude) for point in points]
 
-@router.get('/point/{point_id}', response_model=PointBase, tags=["point"])
+@router.get('/point/{point_id}', response_model=PointBase)
 async def read_beacon(point_id: str, db: Session = Depends(get_db)):
     point = db.query(Point).filter(Point.id == point_id).first()
     if point is None:
