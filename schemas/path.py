@@ -1,12 +1,9 @@
 from pydantic import BaseModel
 
 
-class BeaconBase(BaseModel):
-    id: str
-    organization_id: int
-    major: int
-    minor: int
-    status: int
+class PathBase(BaseModel):
+    id: int
+    report_id: int
 
     # Automatically translates from dict to object
     class Config:

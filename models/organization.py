@@ -16,3 +16,5 @@ class Organization(Base):
         back_populates="organization",
         uselist=True
     )
+
+    report = relationship("Report", back_populates="organization")
