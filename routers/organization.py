@@ -1,10 +1,9 @@
-from typing import List
 from fastapi import APIRouter, Depends
 from fastapi.exceptions import HTTPException
 
 from sqlalchemy.orm.session import Session
 
-from config.database import get_db
+from core.database import get_db
 from models.organization import Organization
 from schemas.organization import OrganizationBase
 

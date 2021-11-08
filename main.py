@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from core.config import Config
 
 from routers.beacon import router as BeaconRouter
 from routers.organization import router as OrganizationRouter

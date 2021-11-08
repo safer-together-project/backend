@@ -1,7 +1,6 @@
-from typing import List
+from core.database import Base
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql.expression import true
-from config.database import Base
 from sqlalchemy import Column, String
 from sqlalchemy.sql.sqltypes import Integer
 
