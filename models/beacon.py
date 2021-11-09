@@ -1,22 +1,16 @@
-from typing import List
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql.expression import true
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import Float, Integer
-from core.database import Base
-from sqlalchemy import Column, String
+from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
+
+from models.organization import Organization
 
 
-class Beacon(Base):
-    __tablename__ = 'Beacon'
+class Beacon(SQLModel, table=True):
+    id: str = Field(primar_key=True)
+    organization_id: Optional[int] = Field(default=None, foreign_key="Organization.id")
+    major: int
+    minor: int
+    status: int
+    longitude: float
+    latitude: float
 
-    id = Column(String, primary_key=true)
-    organization_id = Column(Integer, ForeignKey('Organization.id'))
-    major = Column(Integer)
-    minor = Column(Integer)
-    status = Column(Integer)
-    longitude = Column(Float)
-    latitude = Column(Float)
-
-    ## ORM Values
-    organization = relationship("Organization", back_populates="beacons")
+    organization: Optional[Organization] = Relationship(back_populates="beacons")

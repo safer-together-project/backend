@@ -1,16 +1,13 @@
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql.expression import true
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import Float, Integer
-from core.database import Base
-from sqlalchemy import Column
+from typing import List, Optional
+from sqlmodel import SQLModel, Field, Relationship
+from models.point import Point
+
+from models.report import Report
 
 
-class Path(Base):
-    __tablename__ = 'Path'
+class Path(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    report_id: Optional[int] = Field(default=None, foreign_key="Report.id")
 
-    id = Column(Integer, primary_key=true, autoincrement=true)
-    report_id = Column(Integer, ForeignKey("Report.id"))
-
-    report = relationship("Report", back_populates="path")
-    points = relationship("Point", back_populates="path", uselist=True)
+    report: Optional[Report] = Relationship(back_populates="path")
+    points: List["Point"] = Relationship(back_populates="path")

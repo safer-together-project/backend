@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-from core.config import Config
 
-from routers.beacon import router as BeaconRouter
 from routers.organization import router as OrganizationRouter
+from routers.beacon import router as BeaconRouter
 from routers.report import router as ReportRouter
 from routers.path import router as PathRouter
 from routers.point import router as PointRouter

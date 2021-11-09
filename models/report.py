@@ -1,17 +1,14 @@
-from sqlalchemy.orm import relation, relationship
-from sqlalchemy.sql.expression import true
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import Float, Integer
-from core.database import Base
-from sqlalchemy import Column
+from typing import Optional
+from sqlmodel import SQLModel, Field, Relationship
+
+from models.organization import Organization
+from models.path import Path
 
 
-class Report(Base):
-    __tablename__ = 'Report'
+class Report(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    organization_id: Optional[int] = Field(default=None, foreign_key="Organization.id")
+    infection_type: int
 
-    id = Column(Integer, primary_key=true, autoincrement=true)
-    organization_id = Column(Integer, ForeignKey("Organization.id"))
-    infection_type = Column(Integer)
-
-    organization = relationship("Organization", back_populates="reports")
-    path = relationship("Path", back_populates="report")
+    organization: Optional[Organization] = Relationship(back_populates="reports")
+    path: Optional[Path] = Relationship(back_populates="report")

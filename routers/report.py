@@ -1,12 +1,12 @@
 from typing import List
-from fastapi import APIRouter, Depends
-from fastapi.exceptions import HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlmodel import Session, select
 
-from sqlalchemy.orm.session import Session
 
-from core.database import get_db
+from core.database import get_session
+from models.beacon import Beacon
 from models.report import Report
-from schemas.report import ReportBase
+
 
 router = APIRouter(
     prefix="/reports",
@@ -14,23 +14,23 @@ router = APIRouter(
     tags=["reports"]
 )
 
-@router.get('/{organization_id}', response_model=List[ReportBase])
-async def read_reports(organization_id: str, db: Session = Depends(get_db)):
-    reports = db.query(Report).filter(Report.organization_id == organization_id)
+@router.get('/{organization_id}', response_model=List[Report])
+async def read_reports(organization_id: str, session: Session = Depends(get_session)):
+    with session:
+        statement = select(Report).where(Report.organization_id == organization_id)
+        result = session.exec(statement)
 
-    return [ReportBase(
-                id=report.id, 
-                organization_id=report.organization_id, 
-                infection_type=report.infection_type) for report in reports]
+        reports = result.all()
+        return reports
 
-@router.get('/report/{report_id}', response_model=ReportBase)
-async def read_report(report_id: str, db: Session = Depends(get_db)):
-    report = db.query(Report).filter(Report.id == report_id)
+@router.get('/report/{report_id}', response_model=Report)
+async def read_report(report_id: str, session: Session = Depends(get_session)):
+    with session:
+        statement = select(Beacon).where(Beacon.id == report_id)
+        result = session.exec(statement)
+        
+        report = result.first()
+        if report is None:
+            raise HTTPException(status_code=404, detail="Organization not found")
 
-    if report is None:
-        raise HTTPException(status_code=404, detail="Report not found")
-
-    return ReportBase(
-                id=report.id, 
-                organization_id=report.organization_id, 
-                infection_type=report.infection_type)
+        return report

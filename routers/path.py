@@ -1,11 +1,8 @@
-from fastapi import APIRouter, Depends
-from fastapi.exceptions import HTTPException
+from fastapi import APIRouter, Depends, HTTPException
+from sqlmodel import Session, select
 
-from sqlalchemy.orm.session import Session
-
-from core.database import get_db
+from core.database import get_session
 from models.path import Path
-from schemas.path import PathBase
 
 router = APIRouter(
     prefix="/path",
@@ -13,13 +10,14 @@ router = APIRouter(
     tags=["path"]
 )
 
-@router.get('/{report_id}', response_model=PathBase)
-async def read_path(report_id: str, db: Session = Depends(get_db)):
-    path = db.query(Path).filter(Path.report_id == report_id).first()
+@router.get('/{report_id}', response_model=Path)
+async def read_path(report_id: str, session: Session = Depends(get_session)):
+    with session:
+        statement = select(Path).where(Path.report_id == report_id)
+        result = session.exec(statement)
 
-    if path is None:
-        raise HTTPException(status_code=404, detail="Path not found")
+        path = result.first()
+        if path is None:
+            raise HTTPException(status_code=404, detail="Organization not found")
 
-    return PathBase(
-                id=path.id, 
-                report_id=path.report_id)
+        return path

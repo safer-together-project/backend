@@ -1,22 +1,18 @@
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql.expression import true
-from sqlalchemy.sql.schema import ForeignKey
-from sqlalchemy.sql.sqltypes import Date, DateTime, Float, Integer
-from core.database import Base
-from sqlalchemy import Column
+import datetime
+from typing import Optional
+from sqlmodel import SQLModel, Field
+from sqlmodel.main import Relationship
+
+from models.path import Path
 
 
-class Point(Base):
-    __tablename__ = 'Point'
+class Point(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    beacon_id: Optional[int] = Field(default=None, foreign_key="Beacon.id")
+    path_id: Optional[int] = Field(default=None, foreign_key="Path.id")
+    initial_timestamp: datetime
+    final_timestamp: datetime
+    longitude: float
+    latitude: float
 
-    id = Column(Integer, primary_key=true, autoincrement=true)
-    beacon_id = Column(Integer, ForeignKey("Beacon.id"))
-    path_id = Column(Integer, ForeignKey("Path.id"))
-    initial_timestamp = Column(DateTime)
-    final_timestamp = Column(DateTime)
-    longitude = Column(Float)
-    latitude = Column(Float)
-
-    # ORM Models
-    beacon = relationship("Beacon")
-    path = relationship("Path", back_populates="points")
+    path: Optional[Path] = Relationship(back_populates="points")

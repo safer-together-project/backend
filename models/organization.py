@@ -1,24 +1,15 @@
-from core.database import Base
-from sqlalchemy.orm import relationship
-from sqlalchemy.sql.expression import true
-from sqlalchemy import Column, String
-from sqlalchemy.sql.sqltypes import Integer
+from typing import List, Optional
+from sqlmodel import SQLModel, Field
+from sqlmodel.main import Relationship
+
+from models.beacon import Beacon
+from models.report import Report
 
 
-class Organization(Base):
-    __tablename__ = 'Organization'
+class Organization(SQLModel, table=True):
+    id: Optional[int] = Field(default=None, primary_key=True)
+    name: str
+    access_code: str
 
-    id = Column(Integer, primary_key=true, autoincrement=true)
-    name = Column(String)
-    access_code = Column(String)
-
-    reports = relationship("Report", 
-                back_populates="organization", 
-                uselist=True
-    )
-
-    beacons = relationship(
-        "Beacon",
-        back_populates="organization",
-        uselist=True
-    )
+    beacons: List["Beacon"] = Relationship(back_populates="organization")
+    reports: List["Report"] = Relationship(back_populates="organization")
