@@ -12,7 +12,6 @@ description = """
 Steds Care App Api for our research project
 """
 
-
 api = FastAPI(
     title="StedsCareApi",
     description=description,

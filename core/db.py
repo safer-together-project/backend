@@ -1,9 +1,7 @@
+import os
 from sqlmodel import create_engine, Session
-
 from sqlmodel.main import SQLModel
-
 from core.config import config
-
 
 engine = create_engine(config.DB_URL, echo=config.DEBUG)
 

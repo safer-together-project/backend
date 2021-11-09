@@ -2,7 +2,7 @@ from typing import Optional, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
-    from organization import Organization
+    from .organization import Organization
 
 class Beacon(SQLModel, table=True):
     id: str = Field(primary_key=True)
