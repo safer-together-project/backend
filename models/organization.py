@@ -1,10 +1,9 @@
-from typing import List, Optional
-from sqlmodel import SQLModel, Field
-from sqlmodel.main import Relationship
+from typing import List, Optional, TYPE_CHECKING
+from sqlmodel import SQLModel, Field, Relationship
 
-from models.beacon import Beacon
-from models.report import Report
-
+if TYPE_CHECKING:
+    from beacon import Beacon
+    from report import Report
 
 class Organization(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)

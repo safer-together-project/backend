@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlmodel import Session, select
 
 
-from core.database import get_session
+from core.db import get_session
 from models.beacon import Beacon
 from models.report import Report
 

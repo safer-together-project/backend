@@ -1,10 +1,9 @@
-import datetime
-from typing import Optional
-from sqlmodel import SQLModel, Field
-from sqlmodel.main import Relationship
+from datetime import datetime
+from typing import Optional, TYPE_CHECKING
+from sqlmodel import SQLModel, Field, Relationship
 
-from models.path import Path
-
+if TYPE_CHECKING:
+    from path import Path
 
 class Point(SQLModel, table=True):
     id: Optional[int] = Field(default=None, primary_key=True)
@@ -15,4 +14,4 @@ class Point(SQLModel, table=True):
     longitude: float
     latitude: float
 
-    path: Optional[Path] = Relationship(back_populates="points")
+    path: Optional["Path"] = Relationship(back_populates="points")

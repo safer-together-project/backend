@@ -14,15 +14,15 @@ class Config(BaseSettings):
 
 
 class DevelopmentConfig(Config):
-    DEBUG: str = True
+    DEBUG: bool = True
 
 
 class TestingConfig(Config):
-    DEBUG: str = True
+    DEBUG: bool = True
 
 
 class ProductionConfig(Config):
-    DEBUG: str = False
+    DEBUG: bool = False
 
 
 def get_config():
