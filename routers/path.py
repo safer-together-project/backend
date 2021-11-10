@@ -16,7 +16,7 @@ async def read_path(report_id: str, session: AsyncSession = Depends(get_session)
     statement = select(Path).where(Path.report_id == report_id)
     result = await session.execute(statement)
 
-    path = result.first()
+    path = result.scalar_one_or_none()
     if path is None:
         raise HTTPException(status_code=404, detail="Path not found")
 

@@ -1,4 +1,4 @@
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter, status
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -22,8 +22,18 @@ async def read_organization(access_code: str, session: AsyncSession = Depends(ge
     statement = select(Organization).where(Organization.access_code == access_code)
     result = await session.execute(statement)
 
-    organization = result.first()
+    organization = result.scalar_one_or_none()
     if organization is None:
         raise HTTPException(status_code=404, detail="Organization not found")
+
+    return organization
+
+@router.post('/', status_code=status.HTTP_201_CREATED)
+async def create_organizaton(organization: Organization, session: AsyncSession = Depends(get_session)):
+    try:
+        session.add(organization)
+        await session.commit()
+    except:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot post the same access code identification.")
 
     return organization
