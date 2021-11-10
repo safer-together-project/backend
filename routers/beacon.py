@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import Depends, HTTPException, APIRouter
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,7 +13,7 @@ router = APIRouter(
     tags=["beacons"],
 )
 
-@router.get('/{organization_id}', response_model=list[Beacon], summary="Manages beacons from a given organization.")
+@router.get('/{organization_id}', response_model=List[Beacon], summary="Manages beacons from a given organization.")
 async def read_beacons(organization_id: str, session: AsyncSession = Depends(get_session)):
     """
     Read beacons with all the information:

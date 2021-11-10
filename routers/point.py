@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import Depends, HTTPException, APIRouter
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -12,7 +13,7 @@ router = APIRouter(
     tags=["points"]
 )
 
-@router.get('/{path_id}', response_model=list[Point])
+@router.get('/{path_id}', response_model=List[Point])
 async def read_points(path_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Point).where(Point.path_id == path_id)
     result = await session.execute(statement)

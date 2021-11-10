@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import Depends, HTTPException, APIRouter
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,7 +14,7 @@ router = APIRouter(
     tags=["reports"]
 )
 
-@router.get('/{organization_id}', response_model=list[Report])
+@router.get('/{organization_id}', response_model=List[Report])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Report).where(Report.organization_id == organization_id)
     result = session.execute(statement)
