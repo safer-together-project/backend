@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from point import Point
 
 class Path(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True, index=True)
     report_id: Optional[int] = Field(default=None, foreign_key="report.id")
 
     report: Optional["Report"] = Relationship(back_populates="path")

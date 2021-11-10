@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from path import Path
 
 class Report(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True, index=True)
     organization_id: Optional[int] = Field(default=None, foreign_key="organization.id")
     infection_type: int
 

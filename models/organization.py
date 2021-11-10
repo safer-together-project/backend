@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from report import Report
 
 class Organization(SQLModel, table=True):
-    id: Optional[int] = Field(default=None, primary_key=True)
+    id: Optional[int] = Field(default=None, primary_key=True, index=True)
     name: str = Field(max_length=256)
     access_code: str = Field(max_length=6)
 
