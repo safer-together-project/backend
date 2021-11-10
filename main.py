@@ -1,7 +1,5 @@
 from fastapi import FastAPI
 
-from core.db import init_db
-
 from routers.organization import router as OrganizationRouter
 from routers.beacon import router as BeaconRouter
 from routers.report import router as ReportRouter
@@ -24,10 +22,6 @@ api.include_router(BeaconRouter)
 api.include_router(ReportRouter)
 api.include_router(PathRouter)
 api.include_router(PointRouter)
-
-@api.on_event("startup")
-async def on_starup():
-    await init_db()
 
 @api.get("/")
 async def root():
