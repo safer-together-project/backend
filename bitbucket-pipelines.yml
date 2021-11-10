@@ -22,5 +22,5 @@ pipelines:
                 REMOTE_PATH: $PROJECT_PATH
                 LOCAL_PATH: './'
                 DEBUG: 'true'
-                EXTRA_ARGS: "--exclude={'.bitbucket', '.git', '__pycache__'}"
+                EXTRA_ARGS: "--exclude={'.bitbucket', '.git'}"
             - ssh $USER@$HOST "cd $PROJECT_PATH && sh bitbucket-deploy.sh && exit"
