@@ -15,7 +15,7 @@ router = APIRouter(
 @router.get('/{path_id}', response_model=list[Point])
 async def read_points(path_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Point).where(Point.path_id == path_id)
-    result = await session.exec(statement)
+    result = await session.execute(statement)
 
     points = result.scalar().all()
     return points
@@ -23,9 +23,9 @@ async def read_points(path_id: str, session: AsyncSession = Depends(get_session)
 @router.get('/point/{point_id}', response_model=Point)
 async def read_point(point_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Point).where(Point.id == point_id)
-    result = await session.exec(statement)
+    result = await session.execute(statement)
 
-    point = result.scalar().first()
+    point = result.first()
     if point is None:
         raise HTTPException(status_code=404, detail="Organization not found")
 

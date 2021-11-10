@@ -14,9 +14,9 @@ router = APIRouter(
 @router.get('/{report_id}', response_model=Path)
 async def read_path(report_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Path).where(Path.report_id == report_id)
-    result = await session.exec(statement)
+    result = await session.execute(statement)
 
-    path = result.scalar().first()
+    path = result.first()
     if path is None:
         raise HTTPException(status_code=404, detail="Organization not found")
 

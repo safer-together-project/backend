@@ -20,9 +20,9 @@ async def read_organization(access_code: str, session: AsyncSession = Depends(ge
     - **access_code**: should have an access code for a user to locate an organization.
     """
     statement = select(Organization).where(Organization.access_code == access_code)
-    result = await session.exec(statement)
+    result = await session.execute(statement)
 
-    organization = result.scalar().first()
+    organization = result.first()
     if organization is None:
         raise HTTPException(status_code=404, detail="Organization not found")
 

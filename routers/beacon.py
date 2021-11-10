@@ -23,8 +23,8 @@ async def read_beacons(organization_id: str, session: AsyncSession = Depends(get
     """
     
     statement = select(Beacon).where(Beacon.organization_id == organization_id)
-    results = await session.exec(statement)
-    beacons = results.scalar().all()
+    results = await session.execute(statement)
+    beacons = results.all()
     return beacons
 
 @router.get('/beacon/{beacon_id}', response_model=Beacon, summary="A single beacon that reports status and location.")
@@ -38,9 +38,9 @@ async def read_beacon(beacon_id: str, session: AsyncSession = Depends(get_sessio
     """
 
     statement = select(Beacon).where(Beacon.id == beacon_id)
-    result = await session.exec(statement)
+    result = await session.execute(statement)
 
-    beacon = result.scalar().first()
+    beacon = result.first()
 
     if beacon is None:
         raise HTTPException(status_code=404, detail="Organization not found")
