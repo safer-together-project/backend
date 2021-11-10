@@ -18,7 +18,7 @@ async def read_points(path_id: str, session: AsyncSession = Depends(get_session)
     statement = select(Point).where(Point.path_id == path_id)
     result = await session.execute(statement)
 
-    points = result.scalar().all()
+    points = result.all()
     return points
 
 @router.get('/point/{point_id}', response_model=Point)
@@ -28,6 +28,6 @@ async def read_point(point_id: str, session: AsyncSession = Depends(get_session)
 
     point = result.first()
     if point is None:
-        raise HTTPException(status_code=404, detail="Organization not found")
+        raise HTTPException(status_code=404, detail="Point not found")
 
     return point

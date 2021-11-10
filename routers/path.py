@@ -18,6 +18,6 @@ async def read_path(report_id: str, session: AsyncSession = Depends(get_session)
 
     path = result.first()
     if path is None:
-        raise HTTPException(status_code=404, detail="Organization not found")
+        raise HTTPException(status_code=404, detail="Path not found")
 
     return path

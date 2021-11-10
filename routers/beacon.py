@@ -44,6 +44,6 @@ async def read_beacon(beacon_id: str, session: AsyncSession = Depends(get_sessio
     beacon = result.first()
 
     if beacon is None:
-        raise HTTPException(status_code=404, detail="Organization not found")
+        raise HTTPException(status_code=404, detail="Beacon not found")
 
     return beacon

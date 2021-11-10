@@ -17,18 +17,18 @@ router = APIRouter(
 @router.get('/{organization_id}', response_model=List[Report])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Report).where(Report.organization_id == organization_id)
-    result = session.execute(statement)
+    result = await session.execute(statement)
 
     reports = result.all()
     return reports
 
 @router.get('/report/{report_id}', response_model=Report)
 async def read_report(report_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Beacon).where(Beacon.id == report_id)
-    result = session.execute(statement)
+    statement = select(Report).where(Report.id == report_id)
+    result = await session.execute(statement)
 
     report = result.first()
     if report is None:
-        raise HTTPException(status_code=404, detail="Organization not found")
+        raise HTTPException(status_code=404, detail="Report not found")
 
     return report
