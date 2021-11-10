@@ -26,8 +26,8 @@ api.include_router(PathRouter)
 api.include_router(PointRouter)
 
 @api.on_event("startup")
-def on_starup():
-    init_db()
+async def on_starup():
+    await init_db()
 
 @api.get("/")
 async def root():
