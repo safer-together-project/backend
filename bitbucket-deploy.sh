@@ -7,7 +7,7 @@ echo "\n\nUpdate Python Dependencies"
 cd /home/deploy/steds-care-backend/
 python3 -m venv python-env
 python-env/bin/pip install -r requirements.txt
-python-env/bin/alembic migrate head # Migrate our database to the latest migration
+python-env/bin/alembic upgrade head # Migrate our database to the latest migration
 
 
 echo "Reload nginx Unit."

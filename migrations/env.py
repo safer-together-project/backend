@@ -9,11 +9,11 @@ from sqlmodel import SQLModel
 
 from alembic import context
 
-from models.point import Point
-from models.path import Path
-from models.report import Report
-from models.beacon import Beacon
 from models.organization import Organization
+from models.beacon import Beacon
+from models.report import Report
+from models.path import Path
+from models.point import Point
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
