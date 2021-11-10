@@ -25,6 +25,9 @@ api.include_router(ReportRouter)
 api.include_router(PathRouter)
 api.include_router(PointRouter)
 
+@api.on_event("startup")
+def on_starup():
+    init_db()
 
 @api.get("/")
 async def root():
