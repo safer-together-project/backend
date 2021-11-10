@@ -10,6 +10,10 @@ from alembic import context
 from sqlmodel.main import SQLModel
 
 from models.organization import Organization
+from models.beacon import Beacon
+from models.path import Path
+from models.point import Point
+from models.report import Report
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
