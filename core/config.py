@@ -10,7 +10,7 @@ class Config(BaseSettings):
     DB_PASS: str = 'steds_care_db'
     DB_HOST: str = 'localhost'
     DB_NAME: str = 'stedscare'
-    DB_URL: str = f'mariadb+mysqldb://{DB_USER}:{DB_PASS}@{DB_HOST}:3306/{DB_NAME}'
+    DB_URL: str = f'mariadb+asyncmy://{DB_USER}:{DB_PASS}@{DB_HOST}:3306/{DB_NAME}'
 
 
 class DevelopmentConfig(Config):

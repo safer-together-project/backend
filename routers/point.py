@@ -1,6 +1,6 @@
-from typing import List
-from fastapi import APIRouter, Depends, HTTPException
-from sqlmodel import Session, select
+from fastapi import Depends, HTTPException, APIRouter
+from sqlalchemy.future import select
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
 from models.point import Point
@@ -12,23 +12,21 @@ router = APIRouter(
     tags=["points"]
 )
 
-@router.get('/{path_id}', response_model=List[Point])
-async def read_points(path_id: str, session: Session = Depends(get_session)):
-    with session:
-        statement = select(Point).where(Point.path_id == path_id)
-        result = session.exec(statement)
+@router.get('/{path_id}', response_model=list[Point])
+async def read_points(path_id: str, session: AsyncSession = Depends(get_session)):
+    statement = select(Point).where(Point.path_id == path_id)
+    result = await session.exec(statement)
 
-        points = result.all()
-        return points
+    points = result.scalar().all()
+    return points
 
 @router.get('/point/{point_id}', response_model=Point)
-async def read_point(point_id: str, session: Session = Depends(get_session)):
-    with session:
-        statement = select(Point).where(Point.id == point_id)
-        result = session.exec(statement)
+async def read_point(point_id: str, session: AsyncSession = Depends(get_session)):
+    statement = select(Point).where(Point.id == point_id)
+    result = await session.exec(statement)
 
-        point = result.first()
-        if point is None:
-            raise HTTPException(status_code=404, detail="Organization not found")
+    point = result.scalar().first()
+    if point is None:
+        raise HTTPException(status_code=404, detail="Organization not found")
 
-        return point
+    return point
