@@ -4,7 +4,7 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
-from models.point import Point
+from models.point import Point, PointRead
 
 
 router = APIRouter(
@@ -13,7 +13,7 @@ router = APIRouter(
     tags=["points"]
 )
 
-@router.get('/{path_id}', response_model=List[Point])
+@router.get('/{path_id}', response_model=List[PointRead])
 async def read_points(path_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Point).where(Point.path_id == path_id)
     result = await session.execute(statement)
@@ -21,7 +21,7 @@ async def read_points(path_id: str, session: AsyncSession = Depends(get_session)
     points = result.scalars().all()
     return points
 
-@router.get('/point/{point_id}', response_model=Point)
+@router.get('/point/{point_id}', response_model=PointRead)
 async def read_point(point_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Point).where(Point.id == point_id)
     result = await session.execute(statement)

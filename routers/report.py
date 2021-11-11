@@ -5,7 +5,7 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
-from models.report import Report
+from models.report import Report, ReportCreate, ReportRead
 
 
 router = APIRouter(
@@ -14,7 +14,7 @@ router = APIRouter(
     tags=["reports"]
 )
 
-@router.get('/{organization_id}', response_model=List[Report])
+@router.get('/{organization_id}', response_model=List[ReportRead])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Report).where(Report.organization_id == organization_id)
     result = await session.execute(statement)
@@ -22,7 +22,7 @@ async def read_reports(organization_id: str, session: AsyncSession = Depends(get
     reports = result.scalars().all()
     return reports
 
-@router.get('/report/{report_id}', response_model=Report)
+@router.get('/report/{report_id}', response_model=ReportRead)
 async def read_report(report_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Report).where(Report.id == report_id)
     result = await session.execute(statement)
@@ -34,7 +34,7 @@ async def read_report(report_id: str, session: AsyncSession = Depends(get_sessio
     return report
 
 @router.post('/report/', status_code=status.HTTP_201_CREATED)
-async def create_report(report: Report, session: AsyncSession = Depends(get_session)):
+async def create_report(report: ReportCreate, session: AsyncSession = Depends(get_session)):
     try:
         session.add(report)
         await session.flush()

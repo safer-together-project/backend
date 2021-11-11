@@ -4,8 +4,8 @@ from sqlalchemy.sql.schema import ForeignKeyConstraint
 from sqlmodel import SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
-    from path import Path
-    from beacon import Beacon
+    from path import Path, PathRead
+    from beacon import Beacon, BeaconRead
 
 class PointBase(SQLModel):
     __table_args__ = (ForeignKeyConstraint(["beacon_id", "beacon_major", "beacon_minor"], ["beacon.id", "beacon.major", "beacon.minor"]), )
@@ -31,6 +31,16 @@ class PointCreate(PointBase):
 
 class PointRead(PointBase):
     id: int
+
+class PointReadWithPath(PointBase):
+    path: Optional[PathRead] = None
+
+class PointReadWithBeacon(PointBase):
+    beacon: Optional[BeaconRead] = None
+
+class PointReadWithPathAndBeacon(PointBase):
+    path: Optional[PathRead] = None
+    beacon: Optional[BeaconRead] = None
 
 class PointUpdate(SQLModel):
     id: Optional[int] = None

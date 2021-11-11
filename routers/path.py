@@ -3,7 +3,7 @@ from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
-from models.path import Path
+from models.path import Path, PathRead
 
 router = APIRouter(
     prefix="/path",
@@ -11,7 +11,7 @@ router = APIRouter(
     tags=["path"]
 )
 
-@router.get('/{report_id}', response_model=Path)
+@router.get('/{report_id}', response_model=PathRead)
 async def read_path(report_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Path).where(Path.report_id == report_id)
     result = await session.execute(statement)

@@ -1,9 +1,8 @@
 from typing import Optional, TYPE_CHECKING
-from sqlalchemy.sql.schema import PrimaryKeyConstraint
 from sqlmodel import SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
-    from organization import Organization
+    from organization import Organization, OrganizationRead
 
 class BeaconBase(SQLModel):
     status: int
@@ -20,12 +19,15 @@ class Beacon(BeaconBase, table=True):
     organization: Optional["Organization"] = Relationship(back_populates="beacons")
 
 class BeaconCreate(BeaconBase):
-    pass
-
-class BeaconRead(BeaconBase):
     id: str
     major: int
     minor: int
+
+class BeaconRead(BeaconCreate):
+    pass
+
+class BeaconReadWithOrganization(OrganizationRead):
+    organization: Optional[OrganizationRead] = None
 
 class BeaconUpdate(SQLModel):
     status: Optional[int] = None

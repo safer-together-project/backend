@@ -1,10 +1,10 @@
 from typing import List, Optional, TYPE_CHECKING
-from sqlalchemy.sql.schema import Column
-from sqlmodel import SQLModel, Field, Relationship, String
+from sqlmodel import SQLModel, Field, Relationship
+
 
 if TYPE_CHECKING:
-    from beacon import Beacon
-    from report import Report
+    from beacon import Beacon, BeaconRead
+    from report import Report, ReportRead
 
 class OrganizationBase(SQLModel):
     name: str = Field(max_length=256)
@@ -16,11 +16,23 @@ class Organization(OrganizationBase, table=True):
     beacons: List["Beacon"] = Relationship(back_populates="organization")
     reports: List["Report"] = Relationship(back_populates="organization")
 
+# CRUD
+
 class OrganizationCreate(OrganizationBase):
     pass
 
 class OrganizationRead(OrganizationBase):
     id: int
+
+class OrganizationReadWithBeacons(OrganizationRead):
+    beacons: List[BeaconRead] = []
+
+class OrganizationReadWithReports(OrganizationRead):
+    reports: List[ReportRead] = []
+
+class OrganizationReadWithReporsAndBeacons(OrganizationRead):
+    beacons: List[BeaconRead] = []
+    reports: List[ReportRead] = []
 
 class OrganizationUpdate(SQLModel):
     id: Optional[int] = None
