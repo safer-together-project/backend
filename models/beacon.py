@@ -1,6 +1,7 @@
 from typing import Optional, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 
+
 if TYPE_CHECKING:
     from organization import Organization, OrganizationRead
 
@@ -26,8 +27,8 @@ class BeaconCreate(BeaconBase):
 class BeaconRead(BeaconCreate):
     pass
 
-class BeaconReadWithOrganization(OrganizationRead):
-    organization: Optional[OrganizationRead] = None
+class BeaconReadWithOrganization(BeaconRead):
+    organization: Optional["OrganizationRead"] = None
 
 class BeaconUpdate(SQLModel):
     status: Optional[int] = None

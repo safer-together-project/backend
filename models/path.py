@@ -21,14 +21,14 @@ class PathRead(PathBase):
     id: int
 
 class PathReadWithReport(PathRead):
-    report: Optional[ReportRead] = None
+    report: Optional["ReportRead"] = None
 
 class PathReadWithPoints(PathRead):
-    points: List[PointRead] = []
+    points: List["PointRead"] = []
 
 class PathReadWithReportAndPoints(PathRead):
-    report: Optional[ReportRead] = None
-    points: List[PointRead] = []
+    report: Optional["ReportRead"] = None
+    points: List["PointRead"] = []
 
 class PathUpdate(SQLModel):
     id: Optional[int] = None

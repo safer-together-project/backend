@@ -25,14 +25,14 @@ class ReportRead(ReportBase):
     id: int
 
 class ReportReadWithPath(ReportRead):
-    path: Optional[PathRead] = None
+    path: Optional["PathRead"] = None
 
 class ReportReadWithOrganization(ReportRead):
-    organization: Optional[OrganizationRead] = None
+    organization: Optional["OrganizationRead"] = None
 
 class ReportReadWithOrganizationAndPath(ReportRead):
-    path: Optional[PathRead] = None
-    organization: Optional[OrganizationRead] = None
+    path: Optional["PathRead"] = None
+    organization: Optional["OrganizationRead"] = None
 
 class ReportUpdate(SQLModel):
     infection_type: Optional[int] = None

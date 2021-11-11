@@ -33,14 +33,14 @@ class PointRead(PointBase):
     id: int
 
 class PointReadWithPath(PointBase):
-    path: Optional[PathRead] = None
+    path: Optional["PathRead"] = None
 
 class PointReadWithBeacon(PointBase):
-    beacon: Optional[BeaconRead] = None
+    beacon: Optional["BeaconRead"] = None
 
 class PointReadWithPathAndBeacon(PointBase):
-    path: Optional[PathRead] = None
-    beacon: Optional[BeaconRead] = None
+    path: Optional["PathRead"] = None
+    beacon: Optional["BeaconRead"] = None
 
 class PointUpdate(SQLModel):
     id: Optional[int] = None

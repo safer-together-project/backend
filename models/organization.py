@@ -25,14 +25,14 @@ class OrganizationRead(OrganizationBase):
     id: int
 
 class OrganizationReadWithBeacons(OrganizationRead):
-    beacons: List[BeaconRead] = []
+    beacons: List["BeaconRead"] = []
 
 class OrganizationReadWithReports(OrganizationRead):
-    reports: List[ReportRead] = []
+    reports: List["ReportRead"] = []
 
 class OrganizationReadWithReporsAndBeacons(OrganizationRead):
-    beacons: List[BeaconRead] = []
-    reports: List[ReportRead] = []
+    beacons: List["BeaconRead"] = []
+    reports: List["ReportRead"] = []
 
 class OrganizationUpdate(SQLModel):
     id: Optional[int] = None
