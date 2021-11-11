@@ -1,5 +1,6 @@
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -34,4 +35,12 @@ async def read_report(report_id: str, session: AsyncSession = Depends(get_sessio
 
 @router.post('/report/', status_code=status.HTTP_201_CREATED)
 async def create_report(report: Report, session: AsyncSession = Depends(get_session)):
-    return {"hello": "hi"}
+    try:
+        session.add(report)
+        await session.flush()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Report already created with the same id.")
+    else:
+        await session.commit()
+    return report

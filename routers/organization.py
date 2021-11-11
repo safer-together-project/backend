@@ -1,6 +1,7 @@
 from fastapi import Depends, HTTPException, APIRouter, status
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.exc import IntegrityError
 
 from core.db import get_session
 from models.organization import Organization
@@ -32,8 +33,10 @@ async def read_organization(access_code: str, session: AsyncSession = Depends(ge
 async def create_organizaton(organization: Organization, session: AsyncSession = Depends(get_session)):
     try:
         session.add(organization)
+        await session.flush()
+    except IntegrityError:
+        await session.rollback()
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Organization already created with the same access code.")
+    else:
         await session.commit()
-    except:
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cannot post the same access code identification.")
-
     return organization

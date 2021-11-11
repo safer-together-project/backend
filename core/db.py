@@ -3,8 +3,8 @@ from sqlalchemy.orm import sessionmaker
 from sqlmodel.main import SQLModel
 from core.config import config
 
-
-engine = create_async_engine(config.DB_URL, echo=config.DEBUG)
+connect_args = { 'autocommit': False }
+engine = create_async_engine(config.DB_URL, echo=config.DEBUG, connect_args=connect_args)
 
 async def init_db():
     async with engine.begin() as conn:
