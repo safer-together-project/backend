@@ -1,3 +1,4 @@
+from os import error
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter, status
 from sqlalchemy.exc import IntegrityError
@@ -6,6 +7,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
 from models.report import Report, ReportCreate, ReportRead
+from utils.handle_errors import handle_integrity_error
 
 
 router = APIRouter(
@@ -36,11 +38,13 @@ async def read_report(report_id: str, session: AsyncSession = Depends(get_sessio
 @router.post('/report/', status_code=status.HTTP_201_CREATED)
 async def create_report(report: ReportCreate, session: AsyncSession = Depends(get_session)):
     try:
-        session.add(report)
+        db_report = Report.from_orm(report)
+        session.add(db_report)
         await session.flush()
-    except IntegrityError:
+        await session.refresh(db_report)
+    except IntegrityError as error:
         await session.rollback()
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Report already created with the same id.")
+        handle_integrity_error(error)
     else:
         await session.commit()
-    return report
+    return db_report

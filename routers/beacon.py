@@ -1,11 +1,12 @@
-from os import major
 from typing import List
-from fastapi import Depends, HTTPException, APIRouter
+from fastapi import Depends, HTTPException, APIRouter, status
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
-from models.beacon import Beacon, BeaconRead
+from models.beacon import Beacon, BeaconCreate, BeaconRead
+from utils.handle_errors import handle_integrity_error
 
 
 router = APIRouter(
@@ -48,3 +49,27 @@ async def read_beacon(beacon_id: str, beacon_major: int, beacon_minor: int, sess
         raise HTTPException(status_code=404, detail="Beacon not found")
 
     return beacon
+
+@router.get('/beacon/{beacon_id}', response_model=BeaconRead, summary="A single beacon that reports status and location.")
+async def read_beacon(beacon: BeaconCreate, session: AsyncSession = Depends(get_session)):
+    """
+    Create a beacon with:
+
+    - **id**: the main identification
+    - **major**: the submain identification.
+    - **minor**: the unique identification.
+    - **status**: the status of the beacon
+    """
+
+    try:
+        db_beacon = Beacon.from_orm(beacon)
+        session.add(db_beacon)
+        await session.flush()
+        await session.refresh(db_beacon)
+    except IntegrityError as error:
+        await session.rollback()
+        handle_integrity_error(error)
+    else:
+        await session.rollback()
+    
+    return db_beacon

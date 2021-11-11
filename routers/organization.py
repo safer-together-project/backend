@@ -5,6 +5,7 @@ from sqlalchemy.exc import IntegrityError
 
 from core.db import get_session
 from models.organization import Organization, OrganizationCreate, OrganizationRead
+from utils.handle_errors import handle_integrity_error
 
 router = APIRouter(
     prefix="/organization",
@@ -32,11 +33,13 @@ async def read_organization(access_code: str, session: AsyncSession = Depends(ge
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=OrganizationRead)
 async def create_organizaton(organization: OrganizationCreate, session: AsyncSession = Depends(get_session)):
     try:
-        session.add(organization)
+        db_organizaton = Organization.from_orm(organization)
+        session.add(db_organizaton)
         await session.flush()
-    except IntegrityError:
+        await session.refresh(db_organizaton)
+    except IntegrityError as error:
         await session.rollback()
-        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Organization already created with the same access code.")
+        handle_integrity_error(error)
     else:
         await session.commit()
-    return organization
+    return db_organizaton
