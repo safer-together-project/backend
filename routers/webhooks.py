@@ -13,7 +13,7 @@ router = APIRouter(
 async def received_payload(request: Request):
     if request.method == 'POST':
         cwd = os.getcwd()
-        subprocess.call(["sh",f"{cwd}/bitbucket-deploy.sh"])
+        subprocess.call(["sh",f"/home/deploy/steds-care-backend/bitbucket-deploy.sh"])
         return 'OK'
     else:
         raise HTTPException(status_code=403, detail="You cannot access this.")
