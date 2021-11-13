@@ -4,7 +4,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.exc import IntegrityError
 
 from core.db import get_session
-from models.organization import Organization, OrganizationCreate, OrganizationRead
+from models.organization import Organization, OrganizationCreate, OrganizationRead, OrganizationUpdate
 from utils.handle_errors import handle_integrity_error
 
 router = APIRouter(
@@ -34,6 +34,26 @@ async def read_organization(access_code: str, session: AsyncSession = Depends(ge
 async def create_organizaton(organization: OrganizationCreate, session: AsyncSession = Depends(get_session)):
     try:
         db_organizaton = Organization.from_orm(organization)
+        session.add(db_organizaton)
+        await session.flush()
+        await session.refresh(db_organizaton)
+    except IntegrityError as error:
+        await session.rollback()
+        handle_integrity_error(error)
+    else:
+        await session.commit()
+    return db_organizaton
+
+@router.patch('/{organization_id}', status_code=status.HTTP_200_OK, response_model=OrganizationUpdate)
+async def update_organization(organization_id: int, organization: OrganizationUpdate, session: AsyncSession = Depends(get_session)):
+    try:
+        db_organizaton = session.get(organization_id)
+        if not db_organizaton:
+            raise HTTPException(status_code=404, detail="Organization not found")
+
+        organization_data = organization.dict(exclude_unset=True)
+        for key, value in organization_data.items():
+            setattr(db_organizaton, key, value)
         session.add(db_organizaton)
         await session.flush()
         await session.refresh(db_organizaton)
