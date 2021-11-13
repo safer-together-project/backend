@@ -1,9 +1,8 @@
-from fastapi.params import Header
-from fastapi.routing import APIRoute
+from fastapi import APIRouter
 from starlette.requests import Request
 
 
-router = APIRoute(
+router = APIRouter(
     prefix="/webhooks",
     responses={404: {"description": "Not found"}}
 )
