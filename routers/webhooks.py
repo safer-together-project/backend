@@ -1,4 +1,5 @@
 import os
+import pwd
 from fastapi import APIRouter
 from fastapi.exceptions import HTTPException
 from fastapi import Request
@@ -13,7 +14,9 @@ router = APIRouter(
 async def received_payload(request: Request):
     if request.method == 'POST':
         cwd = os.getcwd()
-        subprocess.Popen([f"{cwd}/bitbucket-deploy.sh"], user="deploy", shell=True)
+        uid = pwd.getpwnam('deploy')[2]
+        os.setuid(uid)
+        subprocess.Popen([f"{cwd}/bitbucket-deploy.sh"],  shell=True)
         return 'OK'
     else:
         raise HTTPException(status_code=403, detail="You cannot access this.")
