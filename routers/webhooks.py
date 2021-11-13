@@ -16,7 +16,7 @@ async def received_payload(request: Request):
         # commit_hash = data['push']['changes'][0]['new']['target']['hash'][:7]
         # commit_url = data['push']['changes'][0]['new']['target']['links']['html']['href']
         # print('Webhook received! %s committed %s' % (commit_author, commit_hash))
-        subprocess.Popen(["/usr/bin/zsh","bitbucket-deploy.sh"])
+        subprocess.Popen(["/usr/bin/zsh","/home/deploy/steds-care-backend/bitbucket-deploy.sh"])
         return 'OK'
     else:
         raise HTTPException(status_code=403, detail="You cannot access this.")
