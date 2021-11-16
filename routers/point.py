@@ -16,7 +16,7 @@ router = APIRouter(
 )
 
 @router.post('', response_model=PointRead)
-async def create_paths(points: List[PointCreate], session: AsyncSession = Depends(get_session)):
+async def create_points(points: List[PointCreate], session: AsyncSession = Depends(get_session)):
     def map_to_orm(point):
         return Point.from_orm(point)
 
