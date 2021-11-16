@@ -50,7 +50,7 @@ async def read_beacon(beacon_id: str, beacon_major: int, beacon_minor: int, sess
 
     return beacon
 
-@router.post('/beacon/', response_model=BeaconRead)
+@router.post('/beacon', response_model=BeaconRead)
 async def create_beacon(beacon: BeaconCreate, session: AsyncSession = Depends(get_session)):
     """
     Create a beacon with:

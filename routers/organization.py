@@ -30,7 +30,7 @@ async def read_organization(access_code: str, session: AsyncSession = Depends(ge
 
     return organization
 
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=OrganizationRead)
+@router.post('', status_code=status.HTTP_201_CREATED, response_model=OrganizationRead)
 async def create_organizaton(organization: OrganizationCreate, session: AsyncSession = Depends(get_session)):
     try:
         db_organizaton = Organization.from_orm(organization)

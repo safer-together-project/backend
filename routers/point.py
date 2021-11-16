@@ -15,7 +15,7 @@ router = APIRouter(
     tags=["points"]
 )
 
-@router.post('/', response_model=PointRead)
+@router.post('', response_model=PointRead)
 async def create_paths(points: List[PointCreate], session: AsyncSession = Depends(get_session)):
     def map_to_orm(point):
         return Point.from_orm(point)
@@ -40,8 +40,8 @@ async def read_points(path_id: str, session: AsyncSession = Depends(get_session)
     points = result.scalars().all()
     return points
 
-@router.post('/path/', response_model=List[PointRead])
-async def create_path(point: PointCreate, session: AsyncSession = Depends(get_session)):
+@router.post('/point', response_model=List[PointRead])
+async def create_point(point: PointCreate, session: AsyncSession = Depends(get_session)):
     try:
         db_point = Point.from_orm(point)
         session.add(db_point)

@@ -11,6 +11,7 @@ class Config(BaseSettings):
     DB_HOST: str = 'localhost'
     DB_NAME: str = 'stedscare'
     DB_URL: str = f'mariadb+asyncmy://{DB_USER}:{DB_PASS}@{DB_HOST}:3306/{DB_NAME}'
+    HASH_SECRET: str = 'e460a24f6eb1ace0bcd8d7fb48b91dd0ff19a2094dd3aea3897398a892213bdd'
 
 
 class DevelopmentConfig(Config):

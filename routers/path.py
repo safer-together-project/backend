@@ -24,7 +24,7 @@ async def read_path(report_id: str, session: AsyncSession = Depends(get_session)
 
     return path
 
-@router.post('/', response_model=PathRead)
+@router.post('', response_model=PathRead)
 async def create_path(path: PathCreate, session: AsyncSession = Depends(get_session)):
     try:
         db_path = Path.from_orm(path)

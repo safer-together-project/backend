@@ -5,6 +5,7 @@ from sqlmodel import SQLModel, Field, Relationship
 if TYPE_CHECKING:
     from beacon import Beacon, BeaconRead
     from report import Report, ReportRead
+    from employee import Employee, EmployeeRead
 
 class OrganizationBase(SQLModel):
     name: str = Field(max_length=256)
@@ -15,6 +16,7 @@ class Organization(OrganizationBase, table=True):
 
     beacons: List["Beacon"] = Relationship(back_populates="organization")
     reports: List["Report"] = Relationship(back_populates="organization")
+    employees: List["Employee"] = Relationship(back_populates="organization")
 
 # CRUD
 
@@ -29,6 +31,9 @@ class OrganizationReadWithBeacons(OrganizationRead):
 
 class OrganizationReadWithReports(OrganizationRead):
     reports: List["ReportRead"] = []
+
+class OrganizationReadWithEmployees(OrganizationRead):
+    employees: List["EmployeeRead"] = []
 
 class OrganizationReadWithReporsAndBeacons(OrganizationRead):
     beacons: List["BeaconRead"] = []

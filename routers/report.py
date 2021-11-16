@@ -35,7 +35,7 @@ async def read_report(report_id: str, session: AsyncSession = Depends(get_sessio
 
     return report
 
-@router.post('/report/', status_code=status.HTTP_201_CREATED)
+@router.post('/report', status_code=status.HTTP_201_CREATED)
 async def create_report(report: ReportCreate, session: AsyncSession = Depends(get_session)):
     try:
         db_report = Report.from_orm(report)
