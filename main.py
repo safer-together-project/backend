@@ -7,6 +7,7 @@ from routers.path import router as PathRouter
 from routers.point import router as PointRouter
 from routers.webhooks import router as WebhooksRouter
 from routers.login import router as LoginRouter
+from routers.infection import router as InfectionRouter
 
 description = """
 Steds Care App Api for our research project
@@ -19,12 +20,14 @@ api = FastAPI(
 )
 
 # Add routers here
+api.include_router(InfectionRouter)
 api.include_router(OrganizationRouter)
 api.include_router(BeaconRouter)
 api.include_router(ReportRouter)
 api.include_router(PathRouter)
 api.include_router(PointRouter)
 api.include_router(LoginRouter)
+
 
 # Webhook router
 api.include_router(WebhooksRouter)

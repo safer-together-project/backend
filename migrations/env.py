@@ -15,6 +15,7 @@ from models.report import Report
 from models.path import Path
 from models.point import Point
 from models.employee import Employee
+from models.infection import Infection
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
