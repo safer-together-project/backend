@@ -4,17 +4,22 @@ from sqlmodel import SQLModel, Field, Relationship
 if TYPE_CHECKING:
     from organization import Organization, OrganizationRead
     from path import Path, PathRead
+    from infection import Infection, InfectionRead
 
 class ReportBase(SQLModel):
     infection_type: int
 
     organization_id: Optional[int] = Field(default=None, foreign_key="organization.id")
+    infection_id: Optional[int] = Field(default=None, foreign_key="infection.id")
+
 
 class Report(ReportBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
 
     organization: Optional["Organization"] = Relationship(back_populates="reports")
     path: Optional["Path"] = Relationship(back_populates="report")
+    infection: Optional["Infection"] = Relationship(back_populates="reports")
+
 
 # CRUD
 

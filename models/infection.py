@@ -16,7 +16,7 @@ class InfectionBase(SQLModel):
 class Infection(InfectionBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
 
-    reports: List["Report"] = Relationship(back_populates="organization")
+    reports: List["Report"] = Relationship(back_populates="infection")
 
 
 # CRUD
