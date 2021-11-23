@@ -48,7 +48,7 @@ async def read_infection(infection_id: str, session: AsyncSession = Depends(get_
 @router.post('/infection', status_code=status.HTTP_201_CREATED, response_model=InfectionRead)
 async def create_infection(infection: InfectionCreate, session: AsyncSession = Depends(get_session)):
     try:
-        db_infection = infection.from_orm(infection)
+        db_infection = Infection.from_orm(infection)
         session.add(db_infection)
         await session.flush()
         await session.refresh(db_infection)
