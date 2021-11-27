@@ -13,7 +13,7 @@ class BeaconBase(SQLModel):
     organization_id: Optional[int] = Field(default=None, foreign_key="organization.id")
 
 class Beacon(BeaconBase, table=True):
-    id: str = Field(primary_key=True, max_length=35)
+    id: str = Field(primary_key=True, max_length=36)
     major: int = Field(primary_key=True)
     minor: int = Field(primary_key=True)
 
