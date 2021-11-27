@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from infection import Infection
 
 class ReportBase(SQLModel):
-    infection_type: int
+    mask_worn: bool
 
     organization_id: Optional[int] = Field(default=None, foreign_key="organization.id")
     infection_id: Optional[int] = Field(default=None, foreign_key="infection.id")
@@ -46,7 +46,7 @@ class ReportReadWithOrganizationAndPath(ReportRead):
 
 
 class ReportUpdate(SQLModel):
-    infection_type: Optional[int] = None
+    mask_worn: Optional[bool] = None
     organization_id: Optional[int] = None
 
 
