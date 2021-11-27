@@ -1,10 +1,11 @@
 from typing import Optional, TYPE_CHECKING
+from pydantic.typing import update_field_forward_refs
 from sqlmodel import SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
     from organization import Organization, OrganizationRead
-    from path import Path, PathRead
-    from infection import Infection, InfectionRead
+    from path import Path, PathRead, PathCreate
+    from infection import Infection
 
 class ReportBase(SQLModel):
     infection_type: int
@@ -24,22 +25,30 @@ class Report(ReportBase, table=True):
 # CRUD
 
 class ReportCreate(ReportBase):
-    pass
+    path: Optional["PathCreate"] = None
+
 
 class ReportRead(ReportBase):
     id: int
 
+
 class ReportReadWithPath(ReportRead):
     path: Optional["PathRead"] = None
 
+
 class ReportReadWithOrganization(ReportRead):
     organization: Optional["OrganizationRead"] = None
+
 
 class ReportReadWithOrganizationAndPath(ReportRead):
     path: Optional["PathRead"] = None
     organization: Optional["OrganizationRead"] = None
 
+
 class ReportUpdate(SQLModel):
     infection_type: Optional[int] = None
     organization_id: Optional[int] = None
 
+
+from models.path import PathCreate
+ReportCreate.update_forward_refs()

@@ -1,11 +1,13 @@
-from os import error
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter, status
+from fastapi.param_functions import Path
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
+from models.point import Point
+from models.path import Path
 from models.report import Report, ReportCreate, ReportRead
 from utils.handle_errors import handle_integrity_error
 
@@ -42,6 +44,23 @@ async def create_report(report: ReportCreate, session: AsyncSession = Depends(ge
         session.add(db_report)
         await session.flush()
         await session.refresh(db_report)
+
+        path = report.path
+        path.report_id = db_report.id
+
+        db_path = Path.from_orm(path)
+        session.add(db_path)
+        await session.flush()
+        await session.refresh(db_path)
+
+        points = path.points
+        for point in points:
+            point.path_id = db_path.id
+            db_point = Point.from_orm(point)
+            session.add(db_point)
+
+        await session.flush()
+
     except IntegrityError as error:
         await session.rollback()
         handle_integrity_error(error)

@@ -3,7 +3,7 @@ from sqlmodel import SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
     from report import Report, ReportRead
-    from point import Point, PointRead
+    from point import Point, PointRead, PointCreate
 
 class PathBase(SQLModel):
     report_id: Optional[int] = Field(default=None, foreign_key="report.id")
@@ -15,7 +15,8 @@ class Path(PathBase, table=True):
     points: List["Point"] = Relationship(back_populates="path")
 
 class PathCreate(PathBase):
-    pass
+    points: List["PointCreate"] = []
+
 
 class PathRead(PathBase):
     id: int
@@ -33,3 +34,7 @@ class PathReadWithReportAndPoints(PathRead):
 class PathUpdate(SQLModel):
     id: Optional[int] = None
     report_id: Optional[int] = None
+
+
+from models.point import PointCreate
+PathCreate.update_forward_refs()
