@@ -15,7 +15,7 @@ class PointBase(SQLModel):
     longitude: float
     latitude: float
 
-    beacon_id: Optional[str] = Field(default=None, nullable=False, max_length=35)
+    beacon_id: Optional[str] = Field(default=None, nullable=False, max_length=36)
     beacon_major: Optional[int] = Field(default=None, nullable=False)
     beacon_minor: Optional[int] = Field(default=None, nullable=False)
     path_id: Optional[int] = Field(default=None, foreign_key="path.id")
