@@ -8,7 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from core.db import get_session
 from models.point import Point
 from models.path import Path
-from models.report import Report, ReportCreate, ReportRead, ReportReadWithPathAndPoints
+from models.report import Report, ReportCreate, ReportRead, ReportReadWithPath, ReportReadWithPathAndPoints
 from utils.handle_errors import handle_integrity_error
 
 
@@ -18,9 +18,9 @@ router = APIRouter(
     tags=["reports"]
 )
 
-@router.get('/{organization_id}', response_model=List[ReportReadWithPathAndPoints])
+@router.get('/{organization_id}', response_model=List[ReportReadWithPath])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Point, Path, Report).where(Report.organization_id == organization_id and Report.id == Path.report_id and Path.id == Point.path_id)
+    statement = select(Path, Report).join(Report).where(Report.organization_id == organization_id)
     result = await session.execute(statement)
 
     reports = result.scalars().all()
