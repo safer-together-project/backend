@@ -20,7 +20,7 @@ router = APIRouter(
 
 @router.get('/{organization_id}', response_model=List[ReportReadWithPathAndPoints])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Report, Path).where(Report.organization_id == organization_id and Report.id == Path.report_id)
+    statement = select(Point, Path, Report).join(Path, Report).where(Report.id == organization_id)
     result = await session.execute(statement)
 
     reports = result.scalars().all()
