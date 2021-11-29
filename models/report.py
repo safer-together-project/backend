@@ -8,7 +8,7 @@ if TYPE_CHECKING:
     from infection import Infection
 
 class ReportBase(SQLModel):
-    mask_worn: bool
+    mask_worn: bool = Field(default=False, nullable=False)
 
     organization_id: Optional[int] = Field(default=None, foreign_key="organization.id")
     infection_id: Optional[int] = Field(default=None, foreign_key="infection.id")
