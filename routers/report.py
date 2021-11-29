@@ -18,17 +18,17 @@ router = APIRouter(
     tags=["reports"]
 )
 
-@router.get('/{organization_id}', response_model=List[ReportReadWithPath])
+@router.get('/{organization_id}', response_model=List[ReportRead])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Path, Report).join(Report).where(Report.organization_id == organization_id)
+    statement = select(Report).where(Report.organization_id == organization_id)
     result = await session.execute(statement)
 
     reports = result.scalars().all()
     return reports
 
-@router.get('/report/{report_id}', response_model=ReportReadWithPathAndPoints)
+@router.get('/report/{report_id}', response_model=ReportRead)
 async def read_report(report_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Point, Path, Report).where(Report.id == report_id and Report.id == Path.report_id and Path.id == Point.path_id)
+    statement = select(Report).where(Report.id == Path.report_id)
     result = await session.execute(statement)
 
     report = result.scalar_one_or_none()
