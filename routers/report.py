@@ -1,3 +1,4 @@
+from os import path
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter, status
 from fastapi.param_functions import Path
@@ -24,6 +25,8 @@ async def read_reports(organization_id: str, session: AsyncSession = Depends(get
     result = await session.execute(statement)
 
     reports = result.scalars().all()
+    for path, report in reports:
+        report.path = path
     return reports
 
 @router.get('/report/{report_id}', response_model=ReportReadWithPathAndPoints)
