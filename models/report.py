@@ -4,7 +4,7 @@ from sqlmodel import SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
     from organization import Organization, OrganizationRead
-    from path import Path, PathRead, PathCreate
+    from path import Path, PathRead, PathCreate, PathReadWithPoints
     from infection import Infection
 
 class ReportBase(SQLModel):
@@ -36,6 +36,10 @@ class ReportReadWithPath(ReportRead):
     path: Optional["PathRead"] = None
 
 
+class ReportReadWithPathAndPoints(ReportRead):
+    path: Optional["PathReadWithPoints"] = None
+
+
 class ReportReadWithOrganization(ReportRead):
     organization: Optional["OrganizationRead"] = None
 
@@ -50,5 +54,7 @@ class ReportUpdate(SQLModel):
     organization_id: Optional[int] = None
 
 
-from models.path import PathCreate
+from models.path import PathCreate, PathRead, PathReadWithPoints
 ReportCreate.update_forward_refs()
+ReportReadWithPath.update_forward_refs()
+ReportReadWithPathAndPoints.update_forward_refs()

@@ -36,5 +36,6 @@ class PathUpdate(SQLModel):
     report_id: Optional[int] = None
 
 
-from models.point import PointCreate
+from models.point import PointCreate, PointRead
 PathCreate.update_forward_refs()
+PathReadWithPoints.update_forward_refs()
