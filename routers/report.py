@@ -26,7 +26,7 @@ async def read_reports(organization_id: str, session: AsyncSession = Depends(get
 
     reports = result.scalars().all()
     for path, report in reports:
-        report.path = path
+            print("Path:", path, "Report:", report)
     return reports
 
 @router.get('/report/{report_id}', response_model=ReportReadWithPathAndPoints)
