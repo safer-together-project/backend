@@ -1,9 +1,11 @@
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter, status
 from fastapi.param_functions import Path
+
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload
 
 from core.db import get_session
 from models.point import Point
@@ -18,17 +20,17 @@ router = APIRouter(
     tags=["reports"]
 )
 
-@router.get('/{organization_id}', response_model=List[ReportRead])
+@router.get('/{organization_id}', response_model=List[ReportReadWithPathAndPoints])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Report).where(Report.organization_id == organization_id)
+    statement = select(Report).where(Report.organization_id == organization_id).options(selectinload(Report.path).selectinload(Path.points))
     result = await session.execute(statement)
 
     reports = result.scalars().all()
     return reports
 
-@router.get('/report/{report_id}', response_model=ReportRead)
+@router.get('/report/{report_id}', response_model=ReportReadWithPathAndPoints)
 async def read_report(report_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Report).where(Report.id == Path.report_id)
+    statement = select(Report).where(Report.id == report_id).options(selectinload(Report.path).selectinload(Path.points))
     result = await session.execute(statement)
 
     report = result.scalar_one_or_none()
