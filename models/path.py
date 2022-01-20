@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from point import Point, PointRead, PointCreate
 
 class PathBase(SQLModel):
-    report_id: Optional[int] = Field(default=None, foreign_key="report.id")
+    report_id: Optional[int] = Field(index=True, default=None, foreign_key="report.id")
 
 class Path(PathBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)

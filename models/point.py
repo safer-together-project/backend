@@ -10,15 +10,16 @@ if TYPE_CHECKING:
 class PointBase(SQLModel):
     __table_args__ = (ForeignKeyConstraint(["beacon_id", "beacon_major", "beacon_minor"], ["beacon.id", "beacon.major", "beacon.minor"]), )
 
-    initial_timestamp: datetime
-    final_timestamp: datetime
-    longitude: float
-    latitude: float
+    initial_timestamp: datetime = Field(index=True)
+    initial_timestamp: datetime = Field(index=True)
+    final_timestamp: datetime = Field(index=True)
+    longitude: float = Field(index=True)
+    latitude: float = Field(index=True)
 
-    beacon_id: Optional[str] = Field(default=None, nullable=False, max_length=36)
-    beacon_major: Optional[int] = Field(default=None, nullable=False)
-    beacon_minor: Optional[int] = Field(default=None, nullable=False)
-    path_id: Optional[int] = Field(default=None, foreign_key="path.id")
+    beacon_id: Optional[str] = Field(index=True, default=None, nullable=False, max_length=36)
+    beacon_major: Optional[int] = Field(index=True, default=None, nullable=False)
+    beacon_minor: Optional[int] = Field(index=True, default=None, nullable=False)
+    path_id: Optional[int] = Field(index=True, default=None, foreign_key="path.id")
 
 class Point(PointBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)

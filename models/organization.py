@@ -8,8 +8,8 @@ if TYPE_CHECKING:
     from employee import Employee, EmployeeRead
 
 class OrganizationBase(SQLModel):
-    name: str = Field(max_length=256)
-    access_code: str = Field(sa_column_kwargs={"unique": True}, max_length=6, nullable=False)
+    name: str = Field(index=True, max_length=256)
+    access_code: str = Field(index=True, sa_column_kwargs={"unique": True}, max_length=6, nullable=False)
 
 class Organization(OrganizationBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)

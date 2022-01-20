@@ -7,10 +7,10 @@ if TYPE_CHECKING:
 
 
 class InfectionBase(SQLModel):
-    name: str = Field(max_length=256)
-    type: int
-    description: str = Field(max_length=pow(2, 10))
-    mandate_mask: bool
+    name: str = Field(index=True, max_length=256)
+    type: int = Field(index=True)
+    description: str = Field(index=True, max_length=pow(2, 10))
+    mandate_mask: bool = Field(index=True)
 
 
 class Infection(InfectionBase, table=True):

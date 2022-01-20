@@ -6,12 +6,12 @@ if TYPE_CHECKING:
     from organization import Organization, OrganizationRead
 
 class EmployeeBase(SQLModel):
-    first_name: str = Field(max_length=256)
-    last_name: str = Field(max_length=256)
-    username: str = Field(max_length=256)
-    password: str = Field(max_length=256)
+    first_name: str = Field(index=True, max_length=256)
+    last_name: str = Field(index=True, max_length=256)
+    username: str = Field(index=True, max_length=256)
+    password: str = Field(index=True, max_length=256)
 
-    organization_id: Optional[int] = Field(default=None, foreign_key="organization.id")
+    organization_id: Optional[int] = Field(index=True, default=None, foreign_key="organization.id")
 
 class Employee(EmployeeBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)

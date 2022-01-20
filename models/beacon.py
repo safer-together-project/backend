@@ -6,16 +6,16 @@ if TYPE_CHECKING:
     from organization import Organization, OrganizationRead
 
 class BeaconBase(SQLModel):
-    status: int
-    longitude: float
-    latitude: float
+    status: int = Field(index=True)
+    longitude: float = Field(index=True)
+    latitude: float = Field(index=True)
 
-    organization_id: Optional[int] = Field(default=None, foreign_key="organization.id")
+    organization_id: Optional[int] = Field(index=True, default=None, foreign_key="organization.id")
 
 class Beacon(BeaconBase, table=True):
-    id: str = Field(primary_key=True, max_length=36)
-    major: int = Field(primary_key=True)
-    minor: int = Field(primary_key=True)
+    id: str = Field(primary_key=True, max_length=36, index=True)
+    major: int = Field(primary_key=True, index=True)
+    minor: int = Field(primary_key=True, index=True)
 
     organization: Optional["Organization"] = Relationship(back_populates="beacons")
 
