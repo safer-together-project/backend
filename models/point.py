@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 from sqlalchemy.sql.schema import ForeignKeyConstraint
 from sqlalchemy_utc import UtcDateTime
-from sqlmodel import SQLModel, Field, Relationship, Column, DateTime
+from sqlmodel import SQLModel, Field, Relationship, Column
 from pydantic.json import isoformat
 
 

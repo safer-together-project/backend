@@ -28,7 +28,6 @@ async def read_reports(organization_id: str, session: AsyncSession = Depends(get
     result = await session.execute(statement)
 
     reports = result.scalars().all()
-    # print(reports[0].path.points[0].json())
     return reports
 
 @router.get('/report/{report_id}', response_model=ReportReadWithPathAndPoints)
