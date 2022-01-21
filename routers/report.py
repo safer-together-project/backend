@@ -1,8 +1,6 @@
 from typing import List
 from fastapi import Depends, HTTPException, APIRouter, status
 from fastapi.param_functions import Path
-from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.future import select
@@ -28,8 +26,7 @@ async def read_reports(organization_id: str, session: AsyncSession = Depends(get
     result = await session.execute(statement)
 
     reports = result.scalars().all()
-    json_data = jsonable_encoder(reports)
-    return JSONResponse(content=json_data)
+    return reports
 
 @router.get('/report/{report_id}', response_model=ReportReadWithPathAndPoints)
 async def read_report(report_id: str, session: AsyncSession = Depends(get_session)):
@@ -61,8 +58,6 @@ async def create_report(report: ReportCreate, session: AsyncSession = Depends(ge
         points = path.points
         for point in points:
             point.path_id = db_path.id
-            print("AYOOOOOOOOO")
-            print(point.initial_timestamp.isoformat())
             db_point = Point.from_orm(point)
             session.add(db_point)
 

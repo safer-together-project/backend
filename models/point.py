@@ -7,6 +7,9 @@ if TYPE_CHECKING:
     from path import Path, PathRead
     from beacon import Beacon, BeaconRead
 
+def convert_datetime_to_iso_8601_with_z_suffix(dt: datetime) -> str:
+    return dt.isoformat()
+
 class PointBase(SQLModel):
     __table_args__ = (ForeignKeyConstraint(["beacon_id", "beacon_major", "beacon_minor"], ["beacon.id", "beacon.major", "beacon.minor"]), )
 
@@ -20,6 +23,12 @@ class PointBase(SQLModel):
     beacon_major: Optional[int] = Field(index=True, default=None, nullable=False)
     beacon_minor: Optional[int] = Field(index=True, default=None, nullable=False)
     path_id: Optional[int] = Field(index=True, default=None, foreign_key="path.id")
+
+    class Config:
+        json_encoders = {
+            # custom output conversion for datetime
+            datetime: convert_datetime_to_iso_8601_with_z_suffix
+        }
 
 class Point(PointBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
