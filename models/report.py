@@ -1,6 +1,8 @@
+from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 from sqlalchemy.orm.relationships import RelationshipProperty
-from sqlmodel import SQLModel, Field, Relationship
+from sqlalchemy_utc import UtcDateTime
+from sqlmodel import Column, SQLModel, Field, Relationship
 
 if TYPE_CHECKING:
     from organization import Organization, OrganizationRead
@@ -10,6 +12,7 @@ if TYPE_CHECKING:
 
 class ReportBase(SQLModel):
     mask_worn: bool = Field(index=True, default=False, nullable=False)
+    created: datetime = Field(sa_column=Column(UtcDateTime(timezone=True), nullable=False, index=True), index=True)
 
     organization_id: Optional[int] = Field(index=True, default=None, foreign_key="organization.id")
     infection_id: Optional[int] = Field(index=True, default=None, foreign_key="infection.id")
