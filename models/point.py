@@ -2,13 +2,11 @@ from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 from sqlalchemy.sql.schema import ForeignKeyConstraint
 from sqlmodel import SQLModel, Field, Relationship
+from pydantic.json import isoformat
 
 if TYPE_CHECKING:
     from path import Path, PathRead
     from beacon import Beacon, BeaconRead
-
-def convert_datetime_to_iso_8601_with_z_suffix(dt: datetime) -> str:
-    return dt.isoformat()
 
 class PointBase(SQLModel):
     __table_args__ = (ForeignKeyConstraint(["beacon_id", "beacon_major", "beacon_minor"], ["beacon.id", "beacon.major", "beacon.minor"]), )
@@ -26,8 +24,7 @@ class PointBase(SQLModel):
 
     class Config:
         json_encoders = {
-            # custom output conversion for datetime
-            datetime: convert_datetime_to_iso_8601_with_z_suffix
+            datetime: isoformat
         }
 
 class Point(PointBase, table=True):
