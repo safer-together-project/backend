@@ -6,16 +6,9 @@ if TYPE_CHECKING:
     from report import Report, ReportRead
     from point import Point, PointRead, PointCreate
 
-def datetime_to_iso_z(d: datetime):
-    return d.isoformat().replace('+00:00', 'Z')
 
 class PathBase(SQLModel):
     report_id: Optional[int] = Field(index=True, default=None, foreign_key="report.id")
-
-    class Config:
-        json_encoders = {
-            datetime: datetime_to_iso_z
-        }
 
 
 class Path(PathBase, table=True):
@@ -31,15 +24,19 @@ class PathCreate(PathBase):
 class PathRead(PathBase):
     id: int
 
+
 class PathReadWithReport(PathRead):
     report: Optional["ReportRead"] = None
+
 
 class PathReadWithPoints(PathRead):
     points: List["PointRead"] = []
 
+
 class PathReadWithReportAndPoints(PathRead):
     report: Optional["ReportRead"] = None
     points: List["PointRead"] = []
+
 
 class PathUpdate(SQLModel):
     id: Optional[int] = None

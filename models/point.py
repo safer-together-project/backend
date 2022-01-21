@@ -1,10 +1,10 @@
-from datetime import date, datetime
+from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 from sqlalchemy.sql.schema import ForeignKeyConstraint
-from sqlmodel import SQLModel, Field, Relationship
+from sqlalchemy_utc import UtcDateTime
+from sqlmodel import SQLModel, Field, Relationship, Column, DateTime
+from pydantic.json import isoformat
 
-def datetime_to_iso_z(d: datetime):
-    return d.isoformat().replace('+00:00', 'Z')
 
 if TYPE_CHECKING:
     from path import Path, PathRead
@@ -13,9 +13,8 @@ if TYPE_CHECKING:
 class PointBase(SQLModel):
     __table_args__ = (ForeignKeyConstraint(["beacon_id", "beacon_major", "beacon_minor"], ["beacon.id", "beacon.major", "beacon.minor"]), )
 
-    initial_timestamp: datetime = Field(index=True)
-    initial_timestamp: datetime = Field(index=True)
-    final_timestamp: datetime = Field(index=True)
+    initial_timestamp: datetime = Field(sa_column=Column(UtcDateTime(timezone=True), nullable=False, index=True), index=True)
+    final_timestamp: datetime = Field(sa_column=Column(UtcDateTime(timezone=True), nullable=False, index=True), index=True)
     longitude: float = Field(index=True)
     latitude: float = Field(index=True)
 
@@ -24,10 +23,6 @@ class PointBase(SQLModel):
     beacon_minor: Optional[int] = Field(index=True, default=None, nullable=False)
     path_id: Optional[int] = Field(index=True, default=None, foreign_key="path.id")
 
-    class Config:
-        json_encoders = {
-            datetime: datetime_to_iso_z
-        }
 
 class Point(PointBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
@@ -35,21 +30,32 @@ class Point(PointBase, table=True):
     path: Optional["Path"] = Relationship(back_populates="points")
     beacon: Optional["Beacon"] = Relationship(back_populates=None)
 
+    class Config:
+        json_encoders = {
+            datetime: isoformat
+        }
+
+
 class PointCreate(PointBase):
     pass
+
 
 class PointRead(PointBase):
     id: int
 
+
 class PointReadWithPath(PointBase):
     path: Optional["PathRead"] = None
+
 
 class PointReadWithBeacon(PointBase):
     beacon: Optional["BeaconRead"] = None
 
+
 class PointReadWithPathAndBeacon(PointBase):
     path: Optional["PathRead"] = None
     beacon: Optional["BeaconRead"] = None
+
 
 class PointUpdate(SQLModel):
     id: Optional[int] = None
