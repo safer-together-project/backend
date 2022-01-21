@@ -1,8 +1,10 @@
-from datetime import datetime
+from datetime import date, datetime
 from typing import Optional, TYPE_CHECKING
 from sqlalchemy.sql.schema import ForeignKeyConstraint
 from sqlmodel import SQLModel, Field, Relationship
-from pydantic.json import isoformat
+
+def datetime_to_iso_z(d: datetime):
+    return d.isoformat().replace('+00:00', 'Z')
 
 if TYPE_CHECKING:
     from path import Path, PathRead
@@ -24,7 +26,7 @@ class PointBase(SQLModel):
 
     class Config:
         json_encoders = {
-            datetime: isoformat
+            datetime: datetime_to_iso_z
         }
 
 class Point(PointBase, table=True):
