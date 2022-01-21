@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import List, Optional, TYPE_CHECKING
 from sqlmodel import SQLModel, Field, Relationship
 
@@ -5,8 +6,17 @@ if TYPE_CHECKING:
     from report import Report, ReportRead
     from point import Point, PointRead, PointCreate
 
+def datetime_to_iso_z(d: datetime):
+    return d.isoformat().replace('+00:00', 'Z')
+
 class PathBase(SQLModel):
     report_id: Optional[int] = Field(index=True, default=None, foreign_key="report.id")
+
+    class Config:
+        json_encoders = {
+            datetime: datetime_to_iso_z
+        }
+
 
 class Path(PathBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)

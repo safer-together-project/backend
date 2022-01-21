@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional, TYPE_CHECKING
 from pydantic.typing import update_field_forward_refs
 from sqlalchemy.orm.relationships import RelationshipProperty
@@ -8,11 +9,19 @@ if TYPE_CHECKING:
     from path import Path, PathRead, PathCreate, PathReadWithPoints
     from infection import Infection
 
+def datetime_to_iso_z(d: datetime):
+    return d.isoformat().replace('+00:00', 'Z')
+
 class ReportBase(SQLModel):
     mask_worn: bool = Field(index=True, default=False, nullable=False)
 
     organization_id: Optional[int] = Field(index=True, default=None, foreign_key="organization.id")
     infection_id: Optional[int] = Field(index=True, default=None, foreign_key="infection.id")
+
+    class Config:
+        json_encoders = {
+            datetime: datetime_to_iso_z
+        }
 
 class Report(ReportBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
