@@ -12,7 +12,7 @@ from sqlalchemy.orm import selectinload
 from core.db import get_session
 from models.point import Point
 from models.path import Path
-from models.report import Report, ReportCreate, ReportRead, ReportReadWithPath, ReportReadWithPathAndPoints
+from models.report import Report, ReportCreate, ReportRead, ReportReadWithInfectionAndPathAndPoints, ReportReadWithPath, ReportReadWithPathAndPoints
 from utils.handle_errors import handle_integrity_error
 
 
@@ -30,7 +30,7 @@ async def read_reports(organization_id: str, session: AsyncSession = Depends(get
     reports = result.scalars().all()
     return reports
 
-@router.get('/report/{report_id}', response_model=ReportReadWithPathAndPoints)
+@router.get('/report/{report_id}', response_model=ReportReadWithInfectionAndPathAndPoints)
 async def read_report(report_id: str, session: AsyncSession = Depends(get_session)):
     statement = select(Report).where(Report.id == report_id).options(selectinload(Report.path).selectinload(Path.points))
     result = await session.execute(statement)

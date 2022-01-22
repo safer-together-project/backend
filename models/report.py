@@ -53,6 +53,9 @@ class ReportReadWithOrganizationAndPath(ReportRead):
     path: Optional["PathRead"] = None
     organization: Optional["OrganizationRead"] = None
 
+class ReportReadWithInfectionAndPathAndPoints(ReportRead):
+    path: Optional["PathReadWithPoints"] = None
+    infection: Optional["Infection"] = None
 
 class ReportUpdate(SQLModel):
     mask_worn: Optional[bool] = None
