@@ -24,7 +24,7 @@ router = APIRouter(
 
 @router.get('/{organization_id}', response_model=List[ReportReadWithInfectionAndPathAndPoints])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Report).where(Report.organization_id == organization_id).options(selectinload(Report.infection).selectinload(Report.path).selectinload(Path.points))
+    statement = select(Report).where(Report.organization_id == organization_id).options(selectinload(Report.infection), selectinload(Report.path).selectinload(Path.points))
     result = await session.execute(statement)
 
     reports = result.scalars().all()
@@ -32,7 +32,7 @@ async def read_reports(organization_id: str, session: AsyncSession = Depends(get
 
 @router.get('/report/{report_id}', response_model=ReportReadWithInfectionAndPathAndPoints)
 async def read_report(report_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Report).where(Report.id == report_id).options(selectinload(Report.infection).selectinload(Report.path).selectinload(Path.points))
+    statement = select(Report).where(Report.id == report_id).options(selectinload(Report.infection), selectinload(Report.path).selectinload(Path.points))
     result = await session.execute(statement)
 
     report = result.scalar_one_or_none()
