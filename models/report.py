@@ -55,7 +55,7 @@ class ReportReadWithOrganizationAndPath(ReportRead):
 
 class ReportReadWithInfectionAndPathAndPoints(ReportRead):
     path: Optional["PathReadWithPoints"] = None
-    infection: Optional["Infection"] = None
+    infection: Optional["InfectionRead"] = None
 
 class ReportUpdate(SQLModel):
     mask_worn: Optional[bool] = None
@@ -63,6 +63,8 @@ class ReportUpdate(SQLModel):
 
 
 from models.path import PathCreate, PathRead, PathReadWithPoints
+from models.infection import InfectionRead
 ReportCreate.update_forward_refs()
 ReportReadWithPath.update_forward_refs()
 ReportReadWithPathAndPoints.update_forward_refs()
+ReportReadWithInfectionAndPathAndPoints.update_forward_refs()
