@@ -11,7 +11,6 @@ if TYPE_CHECKING:
 
 
 class ReportBase(SQLModel):
-    mask_worn: bool = Field(index=True, default=False, nullable=False)
     created: datetime = Field(sa_column=Column(UtcDateTime(timezone=True), nullable=False, index=True), index=True)
 
     organization_id: Optional[int] = Field(index=True, default=None, foreign_key="organization.id")
@@ -58,8 +57,8 @@ class ReportReadWithInfectionInfoAndPathAndPoints(ReportRead):
     infection_condition: Optional["InfectionConditionReadWithInfection"] = None
 
 class ReportUpdate(SQLModel):
-    mask_worn: Optional[bool] = None
     organization_id: Optional[int] = None
+    infection_condition_id: Optional[int] = None
 
 
 from models.path import PathCreate, PathRead, PathReadWithPoints
