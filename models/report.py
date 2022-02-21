@@ -20,9 +20,9 @@ class ReportBase(SQLModel):
 class Report(ReportBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
 
-    organization: Optional["Organization"] = Relationship(back_populates="reports")
-    path: Optional["Path"] = Relationship(back_populates="report")
-    infection_condition: Optional["InfectionCondition"] = Relationship(back_populates="reports")
+    organization: Optional["Organization"] = Relationship(sa_relationship=RelationshipProperty("Organization", back_populates="reports", uselist=False))
+    path: Optional["Path"] = Relationship(sa_relationship=RelationshipProperty("Path", back_populates="report", uselist=False))
+    infection_condition: Optional["InfectionCondition"] = Relationship(sa_relationship=RelationshipProperty("InfectionCondition", back_populates="reports", uselist=False))
 
 
 # CRUD
