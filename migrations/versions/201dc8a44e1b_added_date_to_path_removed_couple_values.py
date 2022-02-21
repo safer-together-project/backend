@@ -58,7 +58,7 @@ def upgrade():
                existing_type=mysql.INTEGER(display_width=11),
                nullable=True,
                autoincrement=True)
-    op.drop_column('report', 'infection_id')
+
     # ### end Alembic commands ###
 
 

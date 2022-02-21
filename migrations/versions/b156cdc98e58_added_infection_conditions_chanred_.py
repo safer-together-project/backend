@@ -37,11 +37,12 @@ def upgrade():
 
     # Report 
 
+    op.add_column('report', sa.Column('infection_condition_id', mysql.INTEGER(display_width=11), autoincrement=False, nullable=True))
     op.drop_constraint('report_ibfk_2', 'report', type_='foreignkey')
-    op.drop_index('ix_report_infection_id', table_name='report')
-    op.drop_column('report', 'infection_id')
-    op.create_index(op.f('ix_report_infection_condition_id'), 'report', ['infection_condition_id'], unique=False)
     op.create_foreign_key(None, 'report', 'infectioncondition', ['infection_condition_id'], ['id'])
+    op.drop_index('ix_report_infection_id', table_name='report')
+    op.create_index(op.f('ix_report_infection_condition_id'), 'report', ['infection_condition_id'], unique=False)    
+    op.drop_column('report', 'infection_id')
     # ### end Alembic commands ###
 
 
