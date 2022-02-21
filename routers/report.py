@@ -10,9 +10,11 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from core.db import get_session
+from models.infection import Infection
+from models.infection_condition import InfectionCondition
 from models.point import Point
 from models.path import Path
-from models.report import Report, ReportCreate, ReportRead, ReportReadWithInfectionAndPathAndPoints, ReportReadWithPath, ReportReadWithPathAndPoints
+from models.report import Report, ReportCreate, ReportRead, ReportReadWithInfectionInfoAndPathAndPoints, ReportReadWithPath, ReportReadWithPathAndPoints
 from utils.handle_errors import handle_integrity_error
 
 
@@ -22,17 +24,17 @@ router = APIRouter(
     tags=["reports"]
 )
 
-@router.get('/{organization_id}', response_model=List[ReportReadWithInfectionAndPathAndPoints])
+@router.get('/{organization_id}', response_model=List[ReportReadWithInfectionInfoAndPathAndPoints])
 async def read_reports(organization_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Report).where(Report.organization_id == organization_id).options(selectinload(Report.infection), selectinload(Report.path).selectinload(Path.points))
+    statement = select(Report).where(Report.organization_id == organization_id).options(selectinload(Report.infection_condition).selectinload(InfectionCondition.infection), selectinload(Report.path).selectinload(Path.points))
     result = await session.execute(statement)
 
     reports = result.scalars().all()
     return reports
 
-@router.get('/report/{report_id}', response_model=ReportReadWithInfectionAndPathAndPoints)
+@router.get('/report/{report_id}', response_model=ReportReadWithInfectionInfoAndPathAndPoints)
 async def read_report(report_id: str, session: AsyncSession = Depends(get_session)):
-    statement = select(Report).where(Report.id == report_id).options(selectinload(Report.infection), selectinload(Report.path).selectinload(Path.points))
+    statement = select(Report).where(Report.id == report_id).options(selectinload(Report.infection_condition).selectinload(InfectionCondition.infection), selectinload(Report.path).selectinload(Path.points))
     result = await session.execute(statement)
 
     report = result.scalar_one_or_none()

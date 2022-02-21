@@ -1,5 +1,9 @@
+from datetime import datetime
 from typing import List, Optional, TYPE_CHECKING
-from sqlmodel import SQLModel, Field, Relationship
+from sqlalchemy import Column
+from sqlalchemy_utc import UtcDateTime
+from sqlmodel import SQLModel, Field, Relationship, Column
+from pydantic.json import isoformat
 
 if TYPE_CHECKING:
     from report import Report, ReportRead
@@ -7,6 +11,8 @@ if TYPE_CHECKING:
 
 
 class PathBase(SQLModel):
+    date: datetime = Field(sa_column=Column(UtcDateTime(timezone=True), nullable=False, index=True), index=True)
+
     report_id: Optional[int] = Field(index=True, default=None, foreign_key="report.id")
 
 
@@ -15,6 +21,12 @@ class Path(PathBase, table=True):
 
     report: Optional["Report"] = Relationship(back_populates="path")
     points: List["Point"] = Relationship(back_populates="path")
+
+    class Config:
+        json_encoders = {
+            datetime: isoformat
+        }
+
 
 class PathCreate(PathBase):
     points: List["PointCreate"] = []

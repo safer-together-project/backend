@@ -6,6 +6,7 @@ if TYPE_CHECKING:
     from beacon import Beacon, BeaconRead
     from report import Report, ReportRead
     from employee import Employee, EmployeeRead
+    from infection_conditions import InfectionCondition, InfectionConditionRead
 
 class OrganizationBase(SQLModel):
     name: str = Field(index=True, max_length=256)
@@ -17,29 +18,41 @@ class Organization(OrganizationBase, table=True):
     beacons: List["Beacon"] = Relationship(back_populates="organization")
     reports: List["Report"] = Relationship(back_populates="organization")
     employees: List["Employee"] = Relationship(back_populates="organization")
+    infection_conditions: List["InfectionCondition"] = Relationship(back_populates="organization")
 
 # CRUD
 
 class OrganizationCreate(OrganizationBase):
     pass
 
+
 class OrganizationRead(OrganizationBase):
     id: int
+
 
 class OrganizationReadWithBeacons(OrganizationRead):
     beacons: List["BeaconRead"] = []
 
+
 class OrganizationReadWithReports(OrganizationRead):
     reports: List["ReportRead"] = []
 
+
 class OrganizationReadWithEmployees(OrganizationRead):
     employees: List["EmployeeRead"] = []
+
+
+class OrganizationReadWithInfectionConditions(OrganizationRead):
+    infection_conditions: List["InfectionCondition"] = []
+
 
 class OrganizationReadWithReporsAndBeacons(OrganizationRead):
     beacons: List["BeaconRead"] = []
     reports: List["ReportRead"] = []
 
+
 class OrganizationUpdate(SQLModel):
     id: Optional[int] = None
     name: Optional[str] = None
     access_code: Optional[str] = None
+

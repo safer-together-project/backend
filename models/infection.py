@@ -3,20 +3,19 @@ from sqlmodel import SQLModel, Field, Relationship
 
 
 if TYPE_CHECKING:
-    from report import Report, ReportRead
+    from infection_condition import InfectionCondition, InfectionConditionRead
 
 
 class InfectionBase(SQLModel):
     name: str = Field(index=True, max_length=256)
     type: int = Field(index=True)
     description: str = Field(index=True, max_length=pow(2, 10))
-    mandate_mask: bool = Field(index=True)
 
 
 class Infection(InfectionBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
 
-    reports: List["Report"] = Relationship(back_populates="infection")
+    infection_conditions: List["InfectionCondition"] = Relationship(back_populates="infection")
 
 
 # CRUD
@@ -34,4 +33,3 @@ class InfectionUpdate(SQLModel):
     name: Optional[str] = None
     type: Optional[int] = None
     description: Optional[str] = None
-    mandate_mask: Optional[bool] = None

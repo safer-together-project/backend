@@ -7,7 +7,7 @@ from sqlmodel import Column, SQLModel, Field, Relationship
 if TYPE_CHECKING:
     from organization import Organization, OrganizationRead
     from path import Path, PathRead, PathCreate, PathReadWithPoints
-    from infection import Infection
+    from infection_condition import InfectionCondition, InfectionConditionRead, InfectionConditionReadWithInfection
 
 
 class ReportBase(SQLModel):
@@ -15,15 +15,15 @@ class ReportBase(SQLModel):
     created: datetime = Field(sa_column=Column(UtcDateTime(timezone=True), nullable=False, index=True), index=True)
 
     organization_id: Optional[int] = Field(index=True, default=None, foreign_key="organization.id")
-    infection_id: Optional[int] = Field(index=True, default=None, foreign_key="infection.id")
+    infection_condition_id: Optional[int] = Field(index=True, default=None, foreign_key="infectioncondition.id")
 
 
 class Report(ReportBase, table=True):
     id: Optional[int] = Field(default=None, primary_key=True, index=True)
 
-    organization: Optional["Organization"] = Relationship(sa_relationship=RelationshipProperty("Organization", back_populates="reports", uselist=False))
-    path: Optional["Path"] = Relationship(sa_relationship=RelationshipProperty("Path", back_populates="report", uselist=False))
-    infection: Optional["Infection"] = Relationship(sa_relationship=RelationshipProperty("Infection", back_populates="reports", uselist=False))
+    organization: Optional["Organization"] = Relationship(back_populates="reports")
+    path: Optional["Path"] = Relationship(back_populates="report")
+    infection_condition: Optional["InfectionCondition"] = Relationship(back_populates="reports")
 
 
 # CRUD
@@ -53,9 +53,9 @@ class ReportReadWithOrganizationAndPath(ReportRead):
     path: Optional["PathRead"] = None
     organization: Optional["OrganizationRead"] = None
 
-class ReportReadWithInfectionAndPathAndPoints(ReportRead):
+class ReportReadWithInfectionInfoAndPathAndPoints(ReportRead):
     path: Optional["PathReadWithPoints"] = None
-    infection: Optional["InfectionRead"] = None
+    infection_condition: Optional["InfectionConditionReadWithInfection"] = None
 
 class ReportUpdate(SQLModel):
     mask_worn: Optional[bool] = None
@@ -63,8 +63,8 @@ class ReportUpdate(SQLModel):
 
 
 from models.path import PathCreate, PathRead, PathReadWithPoints
-from models.infection import InfectionRead
+from models.infection_condition import InfectionConditionReadWithInfection
 ReportCreate.update_forward_refs()
 ReportReadWithPath.update_forward_refs()
 ReportReadWithPathAndPoints.update_forward_refs()
-ReportReadWithInfectionAndPathAndPoints.update_forward_refs()
+ReportReadWithInfectionInfoAndPathAndPoints.update_forward_refs()
