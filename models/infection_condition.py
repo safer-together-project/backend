@@ -39,8 +39,9 @@ class InfectionConditionReadWithInfection(InfectionConditionRead):
 
 class InfectionConditionUpdate(SQLModel):
     id: Optional[int] = None
-    mandate_mask: Optional[bool] = None
-    distance: Optional[int] = None
+    mask_required: Optional[bool] = None
+    distance: Optional[float] = None
+    duration: Optional[float] = None
 
 
 from models.infection import InfectionRead
