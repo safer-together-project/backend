@@ -1,4 +1,6 @@
+from tokenize import String
 from typing import List, Optional, TYPE_CHECKING
+from xxlimited import Str
 from sqlmodel import SQLModel, Field, Relationship
 
 
@@ -33,3 +35,10 @@ class EmployeeUpdate(SQLModel):
     id: Optional[int] = None
     first_name: Optional[str] = None
     last_name: Optional[str] = None
+
+class EmployeeAccess(SQLModel):
+    first_name: str
+    last_name: str
+    organization_id: int
+
+    # access_token: str    

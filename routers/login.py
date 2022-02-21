@@ -4,6 +4,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from core.db import get_session
+from models.employee import EmployeeAccess
 from models.token import Token
 from utils.pwd_validation import ACCESS_TOKEN_EXPIRE_MINUTES, authenticate_employee, create_access_token
 
@@ -13,7 +14,7 @@ router = APIRouter(
     tags=["login"]
 )
 
-@router.post('', response_model=Token)
+@router.post('', response_model=EmployeeAccess)
 async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: AsyncSession = Depends(get_session)):
     employee = await authenticate_employee(username=form_data.username, password=form_data.password, session=session)  # 2
 
@@ -24,8 +25,13 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(), session: Async
             headers={"WWW-Authenticate": "Bearer"},
         )
 
-    access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": employee.username}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer"}
+    # access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    # access_token = create_access_token(
+    #     data={"sub": employee.username}, expires_delta=access_token_expires
+    # )
+
+    return employee
+    # return {"access_token": access_token, "token_type": "bearer"}
+
+    #     employee_access_token = EmployeeAccessToken(first_name=employee.first_name, last_name=employee.last_name, organization_id=employee.organization_id, access_token=access_token)
+    # return employee_access_token

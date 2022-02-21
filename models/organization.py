@@ -6,7 +6,7 @@ if TYPE_CHECKING:
     from beacon import Beacon, BeaconRead
     from report import Report, ReportRead
     from employee import Employee, EmployeeRead
-    from infection_conditions import InfectionCondition, InfectionConditionRead
+    from infection_condition import InfectionCondition, InfectionConditionReadWithInfection
 
 class OrganizationBase(SQLModel):
     name: str = Field(index=True, max_length=256)
@@ -43,7 +43,7 @@ class OrganizationReadWithEmployees(OrganizationRead):
 
 
 class OrganizationReadWithInfectionConditions(OrganizationRead):
-    infection_conditions: List["InfectionCondition"] = []
+    infection_conditions: List["InfectionConditionReadWithInfection"] = []
 
 
 class OrganizationReadWithReporsAndBeacons(OrganizationRead):
