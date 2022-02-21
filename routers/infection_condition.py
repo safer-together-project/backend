@@ -57,19 +57,22 @@ async def create_infection_condition(infection: InfectionConditionCreate, sessio
 @router.patch('/condition/{infection_condition_id}', status_code=status.HTTP_200_OK, response_model=InfectionConditionUpdate)
 async def update_infection_condition(infection_condition_id: int, infection: InfectionConditionUpdate, session: AsyncSession = Depends(get_session)):
     try:
-        db_infection_condition = session.get(infection_condition_id)
-        if not db_infection_condition:
-            raise HTTPException(status_code=404, detail="infection not found")
+        statement = select(InfectionCondition).where(InfectionCondition.id == infection_condition_id)
+        results = await session.execute(statement)
 
-        infection_data = infection.dict(exclude_unset=True)
-        for key, value in infection_data.items():
-            setattr(db_infection_condition, key, value)
-        session.add(db_infection_condition)
+        infection_condition = results.scalar_one_or_none()
+        if infection_condition is None:
+            raise HTTPException(status_code=404, detail="Infection Condition not found. Can't update Infection condition.")
+
+        infection_condition_data = infection.dict(exclude_unset=True)
+        for key, value in infection_condition_data.items():
+            setattr(infection_condition, key, value)
+        session.add(infection_condition)
         await session.flush()
-        await session.refresh(db_infection_condition)
+        await session.refresh(infection_condition)
     except IntegrityError as error:
         await session.rollback()
         handle_integrity_error(error)
     else:
         await session.commit()
-    return db_infection_condition
+    return infection_condition
